@@ -1,0 +1,387 @@
+<!-- Courses Header Banner -->
+<section class="bg-emerald-950 text-white py-14 border-b border-emerald-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl space-y-3">
+      <div class="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-amber-400">
+        <span>Occult Science Academy</span>
+        <span aria-hidden="true">·</span>
+        <span>7 Professional Certifications</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold font-display text-white">
+        Online Numerology Certification Courses
+      </h1>
+      <p class="text-emerald-100/90 text-sm leading-relaxed">
+        Curriculum authored and taught by Acharya Gyan Jyothi. Study authentic Vedic calculations, Lo Shu matrix decoding, and commercial occult consulting with interactive video lessons, PDF compendiums, and accredited certification.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Course Marketplace & Active Curriculum View -->
+<section class="py-14 bg-stone-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Admin Notice -->
+    @if (dataService.currentRole() === 'admin') {
+      <div class="mb-6 p-4 rounded-lg bg-amber-50 border border-amber-300 text-stone-900 flex items-center justify-between text-xs">
+        <div class="flex items-center gap-2">
+          <mat-icon class="!w-4 !h-4 !text-[18px] text-amber-700">admin_panel_settings</mat-icon>
+          <span class="font-bold">Admin Notice:</span>
+          <span>You can edit course fees and publish lesson content from the Admin LMS Manager.</span>
+        </div>
+        <a routerLink="/admin" class="font-semibold text-emerald-800 hover:underline">
+          Go to Admin Courses &rarr;
+        </a>
+      </div>
+    }
+
+    <!-- 7 Courses Horizontal Navigation / Cards Selector -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 mb-10">
+      @for (c of dataService.courses(); track c.id) {
+        <button
+          (click)="selectCourse(c)"
+          [class]="selectedCourse().id === c.id ? 'border-amber-500 bg-emerald-900 text-white shadow-md' : 'border-stone-200 bg-white text-stone-700 hover:border-emerald-700'"
+          class="p-3 rounded-xl border text-left flex flex-col justify-between transition-all cursor-pointer">
+          <div>
+            <div class="text-[10px] font-mono uppercase font-bold" [class]="selectedCourse().id === c.id ? 'text-amber-300' : 'text-stone-400'">
+              0{{ $index + 1 }}
+            </div>
+            <div class="text-xs font-semibold line-clamp-2 mt-1 leading-snug">
+              {{ c.title }}
+            </div>
+          </div>
+          <div class="mt-2 text-[11px] font-mono font-bold" [class]="selectedCourse().id === c.id ? 'text-amber-400' : 'text-emerald-800'">
+            ₹{{ c.price.toLocaleString('en-IN') }}
+          </div>
+        </button>
+      }
+    </div>
+
+    <!-- Selected Course Deep Dive -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      
+      <!-- Main Content (Thumbnail, Description, Curriculum) -->
+      <div class="lg:col-span-8 space-y-8">
+        
+        <!-- Course Marquee Card -->
+        <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-xs">
+          <div class="relative h-64 sm:h-80 overflow-hidden bg-emerald-950">
+            <img
+              [src]="selectedCourse().thumbnail"
+              [alt]="selectedCourse().title"
+              referrerpolicy="no-referrer"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6 text-white space-y-1">
+              <span class="text-xs uppercase font-mono font-semibold text-amber-400">
+                Official Certification Program
+              </span>
+              <h2 class="font-cinzel text-xl sm:text-2xl font-bold leading-tight">
+                {{ selectedCourse().title }}
+              </h2>
+              <p class="text-xs text-stone-200 line-clamp-1">
+                {{ selectedCourse().tagline }}
+              </p>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-8 space-y-6">
+            <!-- Key Metrics -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs">
+              <div>
+                <span class="text-stone-500 uppercase font-bold text-[10px]">Duration</span>
+                <p class="font-bold text-stone-900 mt-0.5">{{ selectedCourse().durationWeeks }} Weeks</p>
+              </div>
+              <div>
+                <span class="text-stone-500 uppercase font-bold text-[10px]">Curriculum</span>
+                <p class="font-bold text-stone-900 mt-0.5">{{ selectedCourse().totalLessons }} Lessons</p>
+              </div>
+              <div>
+                <span class="text-stone-500 uppercase font-bold text-[10px]">Study Notes</span>
+                <p class="font-bold text-stone-900 mt-0.5">{{ selectedCourse().totalPdfMaterials }} PDF Handbooks</p>
+              </div>
+              <div>
+                <span class="text-stone-500 uppercase font-bold text-[10px]">Accreditation</span>
+                <p class="font-bold text-emerald-800 mt-0.5">Certificate Included</p>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <h3 class="font-cinzel text-base font-bold text-stone-900 mb-2">
+                Course Description & Learning Outcomes
+              </h3>
+              <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                {{ selectedCourse().description }}
+              </p>
+            </div>
+
+            <!-- Instructor Profile Card -->
+            <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-4">
+              <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-amber-400 shrink-0 bg-emerald-950">
+                <img
+                  [src]="dataService.settings().expertPhotoUrl"
+                  [alt]="selectedCourse().instructorName"
+                  referrerpolicy="no-referrer"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <div class="text-[10px] uppercase font-bold text-amber-700 tracking-wider">Course Instructor</div>
+                <h4 class="font-bold text-sm text-stone-900">{{ selectedCourse().instructorName }}</h4>
+                <p class="text-xs text-stone-600">{{ selectedCourse().instructorTitle }}</p>
+              </div>
+            </div>
+
+            <!-- Course Curriculum Section -->
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-cinzel text-base font-bold text-stone-900">
+                  Course Curriculum & Video Lectures
+                </h3>
+                <span class="text-xs text-stone-500">
+                  {{ selectedCourse().lessons.length }} Core Modules Published
+                </span>
+              </div>
+
+              <div class="space-y-3">
+                @for (lesson of selectedCourse().lessons; track lesson.id) {
+                  <div class="p-4 rounded-lg border border-stone-200 bg-white hover:border-emerald-600 transition-colors flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-600 font-bold text-xs">
+                        0{{ $index + 1 }}
+                      </div>
+                      <div>
+                        <h4 class="font-semibold text-xs text-stone-900">{{ lesson.title }}</h4>
+                        <div class="flex items-center gap-2 text-[11px] text-stone-500 mt-0.5">
+                          <span class="flex items-center gap-1">
+                            <mat-icon class="!w-3.5 !h-3.5 !text-[14px]">videocam</mat-icon>
+                            {{ lesson.durationMinutes }} Mins
+                          </span>
+                          @if (lesson.pdfTitle) {
+                            <span>·</span>
+                            <span class="flex items-center gap-1 text-emerald-800 font-medium">
+                              <mat-icon class="!w-3.5 !h-3.5 !text-[14px]">picture_as_pdf</mat-icon>
+                              {{ lesson.pdfTitle }}
+                            </span>
+                          }
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      @if (selectedCourse().isEnrolled) {
+                        <a
+                          routerLink="/lms"
+                          class="px-3 py-1.5 rounded bg-emerald-900 text-white text-xs font-semibold hover:bg-emerald-800 transition-colors inline-flex items-center gap-1">
+                          <mat-icon class="!w-3.5 !h-3.5 !text-[14px]">play_arrow</mat-icon>
+                          Watch in LMS
+                        </a>
+                      } @else {
+                        <span class="text-stone-400 text-xs flex items-center gap-1">
+                          <mat-icon class="!w-3.5 !h-3.5 !text-[14px]">lock</mat-icon>
+                          Locked
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Enrollment Card, Progress & Certificate Preview -->
+      <div class="lg:col-span-4 space-y-6">
+        
+        <!-- Pricing & Enrollment Box -->
+        <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-xs space-y-5">
+          <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+            <div>
+              <span class="text-[11px] uppercase font-bold text-stone-500">Enrollment Fee</span>
+              @if (dataService.currentRole() === 'admin') {
+                <div class="flex items-center gap-1 mt-1">
+                  <span class="font-bold text-sm">₹</span>
+                  <input
+                    type="number"
+                    [ngModel]="selectedCourse().price"
+                    (ngModelChange)="onCoursePriceEdit(selectedCourse().id, $event)"
+                    class="w-24 text-base font-bold text-stone-900 border-b border-amber-400 focus:outline-hidden"
+                  />
+                </div>
+              } @else {
+                <div class="font-mono text-2xl font-bold text-emerald-950 mt-1">
+                  ₹{{ selectedCourse().price.toLocaleString('en-IN') }}
+                </div>
+              }
+            </div>
+            <span class="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded">
+              Lifetime Access
+            </span>
+          </div>
+
+          <!-- If already enrolled, show LMS progress -->
+          @if (selectedCourse().isEnrolled) {
+            <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2">
+              <div class="flex items-center justify-between text-xs font-bold text-emerald-900">
+                <span>Enrolled & Active</span>
+                <span>{{ selectedCourse().progressPercent }}% Complete</span>
+              </div>
+              <div class="w-full bg-emerald-200 rounded-full h-2 overflow-hidden">
+                <div
+                  class="bg-emerald-700 h-full rounded-full transition-all duration-500"
+                  [style.width.%]="selectedCourse().progressPercent || 0"></div>
+              </div>
+              <p class="text-[11px] text-stone-600">
+                You are currently enrolled. Access all lectures and quizzes in your student portal.
+              </p>
+              <div class="pt-2">
+                <a
+                  routerLink="/lms"
+                  class="w-full py-2.5 px-4 text-center block text-xs font-bold uppercase tracking-wider bg-emerald-900 hover:bg-emerald-800 text-white rounded-md shadow-xs">
+                  Go to Student LMS Player
+                </a>
+              </div>
+            </div>
+          } @else {
+            <div class="space-y-3">
+              <button
+                (click)="openEnrollModal(selectedCourse())"
+                class="w-full py-3.5 px-6 rounded-md bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs uppercase tracking-wider shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+                <mat-icon class="!w-4 !h-4 !text-[18px]">school</mat-icon>
+                Enroll Now (₹{{ selectedCourse().price.toLocaleString('en-IN') }})
+              </button>
+
+              <div class="text-[11px] text-stone-500 text-center">
+                Secure checkout via Razorpay · Instant LMS activation
+              </div>
+            </div>
+          }
+
+          <div class="border-t border-stone-100 pt-4 space-y-2 text-xs text-stone-600">
+            <div class="flex items-center gap-2">
+              <mat-icon class="!w-4 !h-4 !text-[16px] text-emerald-700">check</mat-icon>
+              <span>Full High-Definition Video Lectures</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <mat-icon class="!w-4 !h-4 !text-[16px] text-emerald-700">check</mat-icon>
+              <span>Downloadable PDF Study Handbooks</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <mat-icon class="!w-4 !h-4 !text-[16px] text-emerald-700">check</mat-icon>
+              <span>Module Quizzes & Self-Assessment</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <mat-icon class="!w-4 !h-4 !text-[16px] text-emerald-700">check</mat-icon>
+              <span>Institute Accredited Completion Certificate</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certificate Preview Card -->
+        <div class="bg-stone-100 rounded-2xl border border-stone-200 p-6 shadow-xs text-center space-y-3">
+          <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto">
+            <mat-icon class="!w-6 !h-6 !text-[24px]">workspace_premium</mat-icon>
+          </div>
+          <h4 class="font-cinzel text-sm font-bold text-stone-900">
+            Official Institute Certificate
+          </h4>
+          <p class="text-xs text-stone-600">
+            Issued under the seal of Gyan Jyothi School of Occult Science upon course completion and quiz evaluation.
+          </p>
+          <a
+            routerLink="/lms"
+            class="text-xs font-semibold text-emerald-900 hover:underline inline-block">
+            Preview Certificate in LMS &rarr;
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ENROLLMENT MODAL WITH RAZORPAY -->
+@if (showEnrollModal() && enrollingCourse()) {
+  <div class="fixed inset-0 z-50 bg-stone-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-stone-200 max-w-lg w-full overflow-hidden">
+      
+      <div class="bg-blue-900 text-white p-5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-800 flex items-center justify-center text-white font-bold text-lg">
+            ₹
+          </div>
+          <div>
+            <h4 class="font-bold text-sm text-white">Course Enrollment Checkout</h4>
+            <p class="text-[11px] text-blue-200">Gyan Jyothi LMS Gateway</p>
+          </div>
+        </div>
+        <button (click)="closeEnrollModal()" class="text-blue-300 hover:text-white">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        @if (enrollSuccess()) {
+          <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-semibold flex items-center gap-2">
+            <mat-icon class="!w-5 !h-5 !text-[20px] text-emerald-700">check_circle</mat-icon>
+            <span>{{ enrollSuccess() }}</span>
+          </div>
+        } @else {
+          <div class="flex justify-between items-center pb-3 border-b border-stone-200">
+            <div>
+              <span class="text-xs text-stone-500 uppercase">Selected Course</span>
+              <h4 class="font-bold text-sm text-stone-900">{{ enrollingCourse()?.title }}</h4>
+              <p class="text-[11px] text-stone-500">Student: {{ dataService.currentStudent().name }} ({{ dataService.currentStudent().email }})</p>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-stone-500 uppercase">Total Fee</span>
+              <div class="text-lg font-bold text-emerald-900">₹{{ enrollingCourse()?.price?.toLocaleString('en-IN') }}</div>
+            </div>
+          </div>
+
+          <p class="text-xs text-stone-600">
+            Select a verified payment method to confirm immediate admission:
+          </p>
+
+          <div class="space-y-2">
+            <button
+              (click)="completeEnrollment('Razorpay UPI')"
+              class="w-full p-3 rounded-lg border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50 flex items-center justify-between text-left transition-colors cursor-pointer">
+              <span class="text-xs font-bold text-stone-900 flex items-center gap-2">
+                <mat-icon class="!w-4 !h-4 !text-[18px] text-emerald-700">qr_code_2</mat-icon>
+                UPI (GPay / PhonePe / Paytm / BHIM)
+              </span>
+              <span class="text-xs text-stone-400">&rarr;</span>
+            </button>
+            <button
+              (click)="completeEnrollment('Razorpay Card')"
+              class="w-full p-3 rounded-lg border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50 flex items-center justify-between text-left transition-colors cursor-pointer">
+              <span class="text-xs font-bold text-stone-900 flex items-center gap-2">
+                <mat-icon class="!w-4 !h-4 !text-[18px] text-blue-700">credit_card</mat-icon>
+                Debit / Credit Card (Visa / Master / RuPay)
+              </span>
+              <span class="text-xs text-stone-400">&rarr;</span>
+            </button>
+            <button
+              (click)="completeEnrollment('Razorpay NetBanking')"
+              class="w-full p-3 rounded-lg border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50 flex items-center justify-between text-left transition-colors cursor-pointer">
+              <span class="text-xs font-bold text-stone-900 flex items-center gap-2">
+                <mat-icon class="!w-4 !h-4 !text-[18px] text-amber-700">account_balance</mat-icon>
+                NetBanking (All Indian Banks)
+              </span>
+              <span class="text-xs text-stone-400">&rarr;</span>
+            </button>
+          </div>
+        }
+      </div>
+
+    </div>
+  </div>
+}

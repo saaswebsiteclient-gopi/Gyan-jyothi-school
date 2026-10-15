@@ -1,0 +1,499 @@
+<!-- LMS Portal Header Banner -->
+<section class="bg-emerald-950 text-white py-12 border-b border-emerald-900 no-print">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-amber-400">
+          <span>Student Learning Portal</span>
+          <span aria-hidden="true">·</span>
+          <span>Learning Management System</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold font-display text-white mt-1">
+          Gyan Jyothi Occult Science Academy
+        </h1>
+        <p class="text-xs text-emerald-200 mt-1">
+          Student: <strong>{{ dataService.currentStudent().name }}</strong> ({{ dataService.currentStudent().email }})
+        </p>
+      </div>
+
+      <!-- Navigation tabs -->
+      <div class="flex items-center gap-2">
+        <button
+          (click)="activeView.set('dashboard')"
+          [class]="activeView() === 'dashboard' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900 text-emerald-200 hover:text-white'"
+          class="px-3.5 py-1.5 rounded-md text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5">
+          <mat-icon class="!w-4 !h-4 !text-[16px]">dashboard</mat-icon>
+          My Courses
+        </button>
+        @if (activeCourse().isEnrolled) {
+          <button
+            (click)="activeView.set('classroom')"
+            [class]="activeView() === 'classroom' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900 text-emerald-200 hover:text-white'"
+            class="px-3.5 py-1.5 rounded-md text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5">
+            <mat-icon class="!w-4 !h-4 !text-[16px]">play_circle</mat-icon>
+            Classroom Player
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main LMS Body -->
+<section class="py-12 bg-stone-50 min-h-[650px]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- VIEW 1: STUDENT DASHBOARD -->
+    @if (activeView() === 'dashboard') {
+      <div class="space-y-10">
+        
+        <!-- Enrolled Courses -->
+        <div>
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="font-cinzel text-xl font-bold text-stone-900">
+              My Enrolled Certifications
+            </h2>
+            <span class="text-xs text-stone-500 font-medium">
+              {{ dataService.currentStudent().enrolledCourseIds.length }} Active Programs
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (course of dataService.courses(); track course.id) {
+              @if (course.isEnrolled) {
+                <div class="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+                  <div>
+                    <div class="relative h-44 bg-emerald-950">
+                      <img
+                        [src]="course.thumbnail"
+                        [alt]="course.title"
+                        referrerpolicy="no-referrer"
+                        class="w-full h-full object-cover"
+                      />
+                      <div class="absolute bottom-3 right-3 bg-stone-900/90 text-amber-300 px-2 py-0.5 rounded text-[11px] font-bold">
+                        {{ course.progressPercent }}% Complete
+                      </div>
+                    </div>
+
+                    <div class="p-5">
+                      <h3 class="font-cinzel text-base font-bold text-stone-900 line-clamp-2 mb-2">
+                        {{ course.title }}
+                      </h3>
+
+                      <!-- Progress Bar -->
+                      <div class="w-full bg-stone-100 rounded-full h-2 mb-4 overflow-hidden">
+                        <div
+                          class="bg-emerald-700 h-full rounded-full transition-all duration-300"
+                          [style.width.%]="course.progressPercent"></div>
+                      </div>
+
+                      <div class="text-xs text-stone-500 space-y-1">
+                        <p>• {{ course.lessons.length }} Video Lectures & Modules</p>
+                        <p>• {{ course.quizzes.length }} Assessment Quizzes</p>
+                        @if (course.certificateIssued) {
+                          <p class="text-emerald-700 font-bold flex items-center gap-1">
+                            <mat-icon class="!w-3.5 !h-3.5 !text-[14px]">workspace_premium</mat-icon>
+                            Certificate Issued on {{ course.certificateDate }}
+                          </p>
+                        }
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="p-5 pt-0 border-t border-stone-100 flex items-center gap-2">
+                    <button
+                      (click)="openCourse(course)"
+                      class="flex-1 py-2 rounded-md bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1 cursor-pointer">
+                      <mat-icon class="!w-4 !h-4 !text-[16px]">play_arrow</mat-icon>
+                      Resume Learning
+                    </button>
+                    @if (course.certificateIssued) {
+                      <button
+                        (click)="viewCertificate(course)"
+                        class="py-2 px-3 rounded-md bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold"
+                        title="View Certificate">
+                        <mat-icon class="!w-4 !h-4 !text-[16px]">workspace_premium</mat-icon>
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Available Courses to Enroll -->
+        <div class="pt-6 border-t border-stone-200">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="font-cinzel text-xl font-bold text-stone-900">
+                Explore More Academy Certifications
+              </h2>
+              <p class="text-xs text-stone-500 mt-0.5">Expand your occult repertoire across name, mobile, and signature frequencies.</p>
+            </div>
+            <a routerLink="/courses" class="text-xs font-semibold text-emerald-900 hover:underline">
+              View Full Marketplace &rarr;
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (course of dataService.courses(); track course.id) {
+              @if (!course.isEnrolled) {
+                <div class="bg-white rounded-xl border border-stone-200 p-5 flex flex-col justify-between shadow-xs">
+                  <div>
+                    <div class="flex justify-between items-start mb-2">
+                      <h4 class="font-cinzel text-sm font-bold text-stone-900">{{ course.title }}</h4>
+                      <span class="text-xs font-bold text-emerald-900 font-mono">₹{{ course.price.toLocaleString('en-IN') }}</span>
+                    </div>
+                    <p class="text-xs text-stone-600 line-clamp-2 mb-3">{{ course.description }}</p>
+                    <div class="text-[11px] text-stone-500">
+                      {{ course.durationWeeks }} Weeks · {{ course.totalLessons }} Lessons · Certificate Included
+                    </div>
+                  </div>
+                  <div class="pt-4 border-t border-stone-100 mt-4">
+                    <a
+                      routerLink="/courses"
+                      class="w-full py-2 text-center block rounded-md bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold uppercase">
+                      Enroll in Course
+                    </a>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+
+      </div>
+    }
+
+    <!-- VIEW 2: CLASSROOM LEARNING PLAYER -->
+    @if (activeView() === 'classroom') {
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Video Player & Lesson Content (8 Cols) -->
+        <div class="lg:col-span-8 space-y-6">
+          
+          <!-- Mock High-Definition Video Player Stage -->
+          <div class="bg-stone-950 rounded-2xl overflow-hidden shadow-2xl border border-stone-800 relative">
+            <div class="relative aspect-video flex flex-col items-center justify-center p-6 text-center bg-radial from-emerald-950/60 to-stone-950">
+              
+              <!-- Video Placeholder Overlay -->
+              <button
+                type="button"
+                aria-label="Play or pause video lecture"
+                class="w-16 h-16 rounded-full bg-amber-400 text-stone-950 flex items-center justify-center shadow-lg mb-3 cursor-pointer hover:scale-110 transition-transform focus:outline-hidden"
+                (click)="isPlaying.set(!isPlaying())">
+                <mat-icon class="!w-8 !h-8 !text-[36px]">{{ isPlaying() ? 'pause' : 'play_arrow' }}</mat-icon>
+              </button>
+
+              <div class="space-y-1">
+                <span class="text-[11px] font-mono uppercase tracking-widest text-amber-400">
+                  {{ activeCourse().title }}
+                </span>
+                <h3 class="font-cinzel text-lg sm:text-xl font-bold text-white max-w-xl">
+                  {{ activeLesson().title }}
+                </h3>
+                <p class="text-xs text-stone-400">
+                  Lecturer: {{ activeCourse().instructorName }} · {{ activeLesson().durationMinutes }} Minutes HD
+                </p>
+              </div>
+
+              @if (isPlaying()) {
+                <div class="absolute top-4 right-4 bg-emerald-900/90 text-emerald-200 px-3 py-1 rounded text-xs font-mono flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  Playing Lecture Stream
+                </div>
+              }
+            </div>
+
+            <!-- Player Controls Toolbar -->
+            <div class="bg-stone-900 p-4 flex items-center justify-between text-xs text-stone-300 border-t border-stone-800">
+              <div class="flex items-center gap-3">
+                <button (click)="isPlaying.set(!isPlaying())" class="hover:text-amber-400 text-white flex items-center">
+                  <mat-icon class="!w-5 !h-5 !text-[20px]">{{ isPlaying() ? 'pause' : 'play_arrow' }}</mat-icon>
+                </button>
+                <span>14:20 / {{ activeLesson().durationMinutes }}:00</span>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-1 text-[11px]">
+                  <span>Speed:</span>
+                  <button
+                    (click)="videoPlaybackSpeed.set(videoPlaybackSpeed() === 1.5 ? 1.0 : 1.5)"
+                    class="bg-stone-800 px-2 py-0.5 rounded text-amber-400 font-mono">
+                    {{ videoPlaybackSpeed() }}x
+                  </button>
+                </div>
+                <div class="flex items-center gap-1 text-[11px]">
+                  <span>Quality:</span>
+                  <span class="text-emerald-400 font-mono font-bold">1080p HD</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson Action & Study Notes -->
+          <div class="bg-white rounded-xl border border-stone-200 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <div class="text-[10px] uppercase font-bold text-stone-400">Current Lesson</div>
+              <h3 class="font-bold text-sm text-stone-900">{{ activeLesson().title }}</h3>
+              @if (activeLesson().pdfTitle) {
+                <p class="text-xs text-emerald-800 mt-1 flex items-center gap-1">
+                  <mat-icon class="!w-3.5 !h-3.5 !text-[15px]">picture_as_pdf</mat-icon>
+                  Handbook: {{ activeLesson().pdfTitle }}
+                </p>
+              }
+            </div>
+
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+              @if (activeLesson().pdfTitle) {
+                <button
+                  (click)="printCertificate()"
+                  class="px-3.5 py-2 rounded-md bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold flex items-center gap-1.5 cursor-pointer">
+                  <mat-icon class="!w-4 !h-4 !text-[16px]">download</mat-icon>
+                  Download PDF
+                </button>
+              }
+              <button
+                (click)="markLessonDone()"
+                class="px-4 py-2 rounded-md bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer">
+                <mat-icon class="!w-4 !h-4 !text-[16px]">check_circle</mat-icon>
+                {{ activeLesson().isCompleted ? 'Completed ✓' : 'Mark Lesson Complete' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Course Assessment & Quiz (Module 6) -->
+          <div class="bg-white rounded-xl border border-stone-200 p-6 sm:p-8 space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-stone-100">
+              <div>
+                <span class="text-xs font-mono uppercase font-bold text-amber-700">Course Assessment</span>
+                <h3 class="font-cinzel text-lg font-bold text-stone-900 mt-0.5">
+                  Certification Evaluation Quiz
+                </h3>
+              </div>
+              <span class="text-xs bg-stone-100 text-stone-700 px-2.5 py-1 rounded font-medium">
+                70% Required to Pass
+              </span>
+            </div>
+
+            @if (quizScore()) {
+              <div
+                [class]="quizScore()?.passed ? 'bg-emerald-50 border-emerald-300 text-emerald-900' : 'bg-red-50 border-red-300 text-red-900'"
+                class="p-4 rounded-xl border flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-sm">
+                    {{ quizScore()?.passed ? 'Congratulations! Assessment Passed' : 'Assessment Not Cleared' }}
+                  </h4>
+                  <p class="text-xs mt-0.5">
+                    Score: <strong>{{ quizScore()?.correct }}</strong> / {{ quizScore()?.total }} Correct Answers.
+                    {{ quizScore()?.passed ? 'Your official certificate has been issued!' : 'Please review the lectures and retake the quiz.' }}
+                  </p>
+                </div>
+                @if (quizScore()?.passed) {
+                  <button
+                    (click)="viewCertificate(activeCourse())"
+                    class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs uppercase rounded-md shadow-xs">
+                    View Certificate
+                  </button>
+                }
+              </div>
+            }
+
+            <div class="space-y-6">
+              @for (q of activeCourse().quizzes; track q.id) {
+                <div class="p-4 rounded-lg bg-stone-50 border border-stone-200 space-y-3">
+                  <div class="font-semibold text-xs text-stone-900 flex items-start gap-2">
+                    <span class="font-mono text-amber-700 font-bold">Q{{ $index + 1 }}.</span>
+                    <span>{{ q.question }}</span>
+                  </div>
+
+                  <div class="space-y-2 pl-5">
+                    @for (opt of q.options; track opt; let optIdx = $index) {
+                      <label class="flex items-center gap-2 text-xs text-stone-700 cursor-pointer">
+                        <input
+                          type="radio"
+                          [name]="q.id"
+                          [value]="optIdx"
+                          [checked]="userQuizAnswers()[q.id] === optIdx"
+                          (change)="setAnswer(q.id, optIdx)"
+                          class="text-emerald-700 focus:ring-emerald-700"
+                        />
+                        <span>{{ opt }}</span>
+                      </label>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+
+            <div class="pt-2">
+              <button
+                (click)="submitQuiz()"
+                class="px-6 py-2.5 rounded-md bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-semibold uppercase tracking-wider cursor-pointer">
+                Submit Assessment Answers
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Curriculum Sidebar (4 Cols) -->
+        <div class="lg:col-span-4 space-y-6">
+          <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-xs space-y-4">
+            <div>
+              <span class="text-[11px] uppercase font-bold text-amber-700">Course Index</span>
+              <h3 class="font-cinzel text-base font-bold text-stone-900 mt-0.5">
+                {{ activeCourse().title }}
+              </h3>
+            </div>
+
+            <div class="space-y-2">
+              @for (lesson of activeCourse().lessons; track lesson.id) {
+                <button
+                  (click)="selectLesson(lesson)"
+                  [class]="activeLesson().id === lesson.id ? 'border-emerald-800 bg-emerald-50 text-emerald-950 font-semibold' : 'border-stone-100 bg-stone-50/50 text-stone-700 hover:bg-stone-100'"
+                  class="w-full p-3 rounded-lg border text-left flex items-center justify-between text-xs transition-colors cursor-pointer">
+                  <div class="flex items-center gap-2">
+                    <mat-icon
+                      [class]="lesson.isCompleted ? 'text-emerald-700' : 'text-stone-300'"
+                      class="!w-4 !h-4 !text-[18px]">
+                      {{ lesson.isCompleted ? 'check_circle' : 'radio_button_unchecked' }}
+                    </mat-icon>
+                    <span class="line-clamp-1">{{ lesson.title }}</span>
+                  </div>
+                  <span class="text-[10px] text-stone-400 font-mono">{{ lesson.durationMinutes }}m</span>
+                </button>
+              }
+            </div>
+
+            <div class="pt-4 border-t border-stone-100">
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-stone-500">Progress</span>
+                <span class="font-bold text-stone-900">{{ activeCourse().progressPercent }}%</span>
+              </div>
+              <div class="w-full bg-stone-100 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-emerald-700 h-full rounded-full" [style.width.%]="activeCourse().progressPercent"></div>
+              </div>
+            </div>
+
+            @if (activeCourse().certificateIssued) {
+              <div class="pt-2">
+                <button
+                  (click)="viewCertificate(activeCourse())"
+                  class="w-full py-2.5 rounded-md bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2">
+                  <mat-icon class="!w-4 !h-4 !text-[16px]">workspace_premium</mat-icon>
+                  Open Official Certificate
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+
+      </div>
+    }
+
+    <!-- VIEW 3: AUTHENTIC CERTIFICATE OF COMPLETION (Module 6) -->
+    @if (activeView() === 'certificate') {
+      <div class="max-w-4xl mx-auto space-y-6">
+        
+        <div class="flex items-center justify-between no-print">
+          <button
+            (click)="activeView.set('dashboard')"
+            class="text-xs text-stone-600 hover:text-stone-900 flex items-center gap-1">
+            &larr; Back to Dashboard
+          </button>
+          <button
+            (click)="printCertificate()"
+            class="px-5 py-2.5 rounded-md bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-semibold uppercase flex items-center gap-2 cursor-pointer shadow-sm">
+            <mat-icon class="!w-4 !h-4 !text-[16px]">print</mat-icon>
+            Print / Save Certificate as PDF
+          </button>
+        </div>
+
+        <!-- Certificate Container -->
+        <div id="printable-report" class="bg-white rounded-2xl border-8 border-double border-amber-600/70 p-10 sm:p-14 shadow-2xl relative overflow-hidden">
+          
+          <!-- Subtle watermark & corner ornaments -->
+          <div class="text-center space-y-6 relative z-10">
+            
+            <div class="flex items-center justify-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-emerald-950 border-2 border-amber-500 flex items-center justify-center text-amber-400">
+                <mat-icon class="!w-7 !h-7 !text-[28px]">explore</mat-icon>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <h1 class="font-cinzel text-2xl sm:text-3xl font-black text-emerald-950 tracking-wider uppercase">
+                GYAN JYOTHI SCHOOL OF OCCULT SCIENCE
+              </h1>
+              <p class="font-cinzel text-xs text-amber-700 tracking-widest uppercase font-semibold">
+                Institute of Traditional Vedic Numerology & Occult Computations
+              </p>
+            </div>
+
+            <div class="w-24 h-0.5 bg-amber-500 mx-auto"></div>
+
+            <p class="font-cinzel text-xs uppercase tracking-widest text-stone-500">
+              Certificate of Academic Excellence
+            </p>
+
+            <div class="py-2">
+              <p class="text-xs text-stone-600 italic">This is to officially certify that</p>
+              <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-stone-900 mt-2 underline decoration-amber-400 decoration-2 underline-offset-8">
+                {{ dataService.currentStudent().name }}
+              </h2>
+            </div>
+
+            <p class="text-xs sm:text-sm text-stone-700 max-w-xl mx-auto leading-relaxed">
+              has satisfactorily completed all modules, video lectures, theoretical case studies, and passed the final evaluation for the professional curriculum:
+            </p>
+
+            <div class="p-3 bg-stone-50 border border-stone-200 rounded-lg max-w-lg mx-auto">
+              <h3 class="font-cinzel text-base sm:text-lg font-bold text-emerald-950">
+                {{ activeCourse().title }}
+              </h3>
+            </div>
+
+            <!-- Signatures and Verification Seal -->
+            <div class="pt-8 grid grid-cols-3 gap-6 items-end text-xs">
+              <div class="text-center">
+                <div class="font-mono text-xs font-bold text-stone-800">
+                  {{ activeCourse().certificateDate || '12/10/2026' }}
+                </div>
+                <div class="w-32 border-t border-stone-400 mx-auto mt-2 pt-1 text-[10px] text-stone-500 uppercase font-semibold">
+                  Date of Conferment
+                </div>
+              </div>
+
+              <!-- Golden Institute Seal -->
+              <div class="flex flex-col items-center">
+                <div class="w-20 h-20 rounded-full border-4 border-amber-500/80 bg-amber-50 flex items-center justify-center text-center p-1 text-amber-900 shadow-inner">
+                  <div class="text-[9px] font-cinzel font-bold leading-tight uppercase">
+                    Official<br>Seal<br>GJOS
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center">
+                <div class="font-cinzel font-bold text-emerald-950 text-sm italic">
+                  Acharya Gyan Jyothi
+                </div>
+                <div class="w-36 border-t border-stone-400 mx-auto mt-2 pt-1 text-[10px] text-stone-500 uppercase font-semibold">
+                  Dean & Occult Scholar
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 text-[10px] text-stone-400 font-mono">
+              Certificate Ref: GJOS-CERT-2026-{{ activeCourse().id.toUpperCase() }}-{{ dataService.currentStudent().name.substring(0, 3).toUpperCase() }} · Registered in Academy Archives
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    }
+
+  </div>
+</section>

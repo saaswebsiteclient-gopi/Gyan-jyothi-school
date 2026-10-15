@@ -1,0 +1,587 @@
+<!-- Calculators Header Banner -->
+<section class="bg-emerald-950 text-white py-14 border-b border-emerald-900 no-print">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl space-y-3">
+      <div class="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-amber-400">
+        <span>Vedic Occult Mathematics</span>
+        <span aria-hidden="true">·</span>
+        <span>Interactive Computational Engine</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold font-display text-white">
+        Numerology & Lo Shu Grid Calculators
+      </h1>
+      <p class="text-emerald-100/90 text-sm leading-relaxed">
+        Experience verified mathematical algorithms according to the traditional Vedic and Chaldean systems. Calculate your Birth Number, Destiny Number, 3x3 Lo Shu Matrix, and phonetic name harmonies.
+      </p>
+
+      <!-- Sub Navigation Tabs -->
+      <div class="pt-4 flex flex-wrap items-center gap-2">
+        <button
+          (click)="activeTab.set('dob')"
+          [class]="activeTab() === 'dob' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900/80 text-emerald-200 hover:text-white'"
+          class="px-4 py-2 rounded-md text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer">
+          Birth & Destiny
+        </button>
+        <button
+          (click)="activeTab.set('loshu')"
+          [class]="activeTab() === 'loshu' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900/80 text-emerald-200 hover:text-white'"
+          class="px-4 py-2 rounded-md text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer">
+          Lo Shu 3x3 Grid
+        </button>
+        <button
+          (click)="activeTab.set('name')"
+          [class]="activeTab() === 'name' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900/80 text-emerald-200 hover:text-white'"
+          class="px-4 py-2 rounded-md text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer">
+          Chaldean Name
+        </button>
+        <button
+          (click)="activeTab.set('mobile')"
+          [class]="activeTab() === 'mobile' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900/80 text-emerald-200 hover:text-white'"
+          class="px-4 py-2 rounded-md text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer">
+          Mobile Number
+        </button>
+        <a
+          routerLink="/reports"
+          class="px-4 py-2 rounded-md text-xs font-semibold uppercase tracking-wider bg-emerald-800 text-amber-300 hover:bg-emerald-700 transition-all ml-auto flex items-center gap-1.5">
+          <mat-icon class="!w-4 !h-4 !text-[16px]">print</mat-icon>
+          Printable Reports
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Calculator Work Area -->
+<section class="py-14 bg-stone-50 min-h-[600px]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- TAB 1: BIRTH & DESTINY NUMBER (MULANK & BHAGYANK) -->
+    @if (activeTab() === 'dob') {
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Input & Arithmetic Explanation -->
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-stone-200 p-6 sm:p-8 shadow-xs space-y-6">
+          <div>
+            <span class="text-xs font-mono uppercase font-bold text-amber-700">Algorithm 01</span>
+            <h2 class="font-cinzel text-xl font-bold text-stone-900 mt-1">
+              Birth & Destiny Number Calculator
+            </h2>
+            <p class="text-xs text-stone-500 mt-1">
+              Enter your date of birth to evaluate your primary core personality and ultimate life purpose.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                Select Date of Birth (DD-MM-YYYY)
+              </label>
+              <input
+                type="date"
+                [ngModel]="dobInput()"
+                (ngModelChange)="dobInput.set($event)"
+                class="w-full px-3.5 py-2.5 text-xs rounded-md border border-stone-300 focus:border-emerald-700 bg-white"
+              />
+            </div>
+
+            <button
+              (click)="calculateDob()"
+              class="w-full py-3 bg-emerald-900 hover:bg-emerald-800 text-white font-bold text-xs uppercase tracking-wider rounded-md transition-colors cursor-pointer">
+              Compute Mulank & Bhagyank
+            </button>
+          </div>
+
+          <!-- Documented Calculation Rules -->
+          <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs text-stone-600 space-y-2">
+            <h4 class="font-bold text-stone-900 uppercase text-[11px] flex items-center gap-1.5">
+              <mat-icon class="!w-4 !h-4 !text-[16px] text-amber-600">functions</mat-icon>
+              Calculation Rules
+            </h4>
+            <p>
+              <strong>Birth Number (Mulank):</strong> The single day of the month reduced to a single digit (e.g. Day 15 = 1 + 5 = <strong>6</strong>).
+            </p>
+            <p>
+              <strong>Destiny Number (Bhagyank):</strong> The entire date (Day + Month + Year) reduced down to a single root digit from 1 to 9.
+            </p>
+            <p class="text-[11px] text-stone-500 italic pt-1">
+              Presented as traditional numerological readings rather than scientifically established predictions.
+            </p>
+          </div>
+        </div>
+
+        <!-- Output Cards -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- Summary Numbers Badges -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Mulank -->
+            <div class="p-6 rounded-2xl bg-white border border-stone-200 shadow-xs flex items-center gap-5">
+              <div class="w-16 h-16 rounded-xl bg-emerald-950 text-amber-400 font-display font-bold text-3xl flex items-center justify-center shrink-0 border border-amber-500/40">
+                {{ birthNumber() }}
+              </div>
+              <div>
+                <span class="text-[11px] font-mono uppercase font-bold text-amber-700">Mulank (Birth Number)</span>
+                <h3 class="font-cinzel text-lg font-bold text-stone-900">{{ mulankDetails().planet }}</h3>
+                <p class="text-xs text-stone-500">{{ mulankDetails().nature }}</p>
+              </div>
+            </div>
+
+            <!-- Bhagyank -->
+            <div class="p-6 rounded-2xl bg-white border border-stone-200 shadow-xs flex items-center gap-5">
+              <div class="w-16 h-16 rounded-xl bg-emerald-900 text-white font-display font-bold text-3xl flex items-center justify-center shrink-0 border border-emerald-700">
+                {{ destinyNumber() }}
+              </div>
+              <div>
+                <span class="text-[11px] font-mono uppercase font-bold text-amber-700">Bhagyank (Destiny Number)</span>
+                <h3 class="font-cinzel text-lg font-bold text-stone-900">{{ bhagyankDetails().planet }}</h3>
+                <p class="text-xs text-stone-500">{{ bhagyankDetails().nature }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Deep Characteristics -->
+          <div class="bg-white rounded-2xl border border-stone-200 p-6 sm:p-8 shadow-xs space-y-5">
+            <h3 class="font-cinzel text-base font-bold text-stone-900 pb-3 border-b border-stone-100">
+              Vedic Personality & Career Synthesis
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div class="p-3.5 rounded-lg bg-stone-50 border border-stone-200">
+                <span class="font-bold text-emerald-900 block mb-1">Auspicious Colors:</span>
+                <span class="text-stone-700">{{ mulankDetails().luckyColors.join(', ') }}</span>
+              </div>
+              <div class="p-3.5 rounded-lg bg-stone-50 border border-stone-200">
+                <span class="font-bold text-emerald-900 block mb-1">Auspicious Days:</span>
+                <span class="text-stone-700">{{ mulankDetails().luckyDays.join(', ') }}</span>
+              </div>
+              <div class="p-3.5 rounded-lg bg-stone-50 border border-stone-200">
+                <span class="font-bold text-emerald-900 block mb-1">Harmonious Numbers:</span>
+                <span class="text-stone-700">{{ mulankDetails().luckyNumbers.join(', ') }}</span>
+              </div>
+              <div class="p-3.5 rounded-lg bg-stone-50 border border-stone-200">
+                <span class="font-bold text-emerald-900 block mb-1">Numbers to Avoid:</span>
+                <span class="text-stone-700">{{ mulankDetails().unfavorableNumbers.join(', ') }}</span>
+              </div>
+            </div>
+
+            <div class="space-y-3 text-xs text-stone-700 pt-2">
+              <div>
+                <strong class="text-stone-900 block mb-0.5">Career Guidance:</strong>
+                <p class="text-stone-600 leading-relaxed">{{ mulankDetails().careerGuidance }}</p>
+              </div>
+              <div>
+                <strong class="text-stone-900 block mb-0.5">Relationship Dynamics:</strong>
+                <p class="text-stone-600 leading-relaxed">{{ mulankDetails().relationshipTraits }}</p>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-stone-100 flex items-center justify-between">
+              <a
+                routerLink="/appointments"
+                class="text-xs font-semibold text-emerald-900 hover:underline flex items-center gap-1">
+                <span>Book Full Personal Consultation with Guruji</span>
+                <mat-icon class="!w-4 !h-4 !text-[16px]">arrow_forward</mat-icon>
+              </a>
+              <a
+                routerLink="/reports"
+                class="px-4 py-2 rounded-md bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold uppercase flex items-center gap-1.5">
+                <mat-icon class="!w-3.5 !h-3.5 !text-[14px]">picture_as_pdf</mat-icon>
+                Generate Report
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    }
+
+    <!-- TAB 2: LO SHU GRID 3x3 MAGIC SQUARE (Module 13 & 2) -->
+    @if (activeTab() === 'loshu') {
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Input & Grid Matrix -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-white rounded-2xl border border-stone-200 p-6 sm:p-8 shadow-xs space-y-4">
+            <div>
+              <span class="text-xs font-mono uppercase font-bold text-amber-700">Algorithm 02</span>
+              <h2 class="font-cinzel text-xl font-bold text-stone-900 mt-1">
+                Lo Shu Grid Matrix (3x3)
+              </h2>
+              <p class="text-xs text-stone-500 mt-1">
+                Sacred 3x3 magic square where rows, columns, and diagonals equate to 15.
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                [ngModel]="loshuDob()"
+                (ngModelChange)="loshuDob.set($event)"
+                class="w-full px-3.5 py-2.5 text-xs rounded-md border border-stone-300 focus:border-emerald-700 bg-white"
+              />
+            </div>
+
+            <button
+              (click)="calculateLoShu()"
+              class="w-full py-3 bg-emerald-900 hover:bg-emerald-800 text-white font-bold text-xs uppercase tracking-wider rounded-md transition-colors cursor-pointer">
+              Generate 3x3 Lo Shu Grid
+            </button>
+          </div>
+
+          <!-- Interactive 3x3 Lo Shu Matrix Visualizer -->
+          <div class="bg-emerald-950 p-6 rounded-2xl border border-amber-500/40 text-white shadow-xl space-y-4">
+            <div class="flex items-center justify-between text-xs text-amber-400">
+              <span class="font-cinzel font-bold uppercase tracking-wider">Lo Shu Sacred Matrix</span>
+              <span class="font-mono text-[11px]">Sum = 15</span>
+            </div>
+
+            <!-- Standard Lo Shu positions:
+                 Row 1: 4, 9, 2
+                 Row 2: 3, 5, 7
+                 Row 3: 8, 1, 6
+            -->
+            <div class="grid grid-cols-3 gap-2 text-center">
+              
+              <!-- Cell 4 (SE / Wood) -->
+              <div class="p-4 rounded-xl border border-emerald-800 bg-emerald-900/60 flex flex-col items-center justify-center">
+                <span class="text-[10px] text-emerald-400 uppercase font-mono">Slot 4</span>
+                <span class="text-2xl font-bold font-mono text-amber-300 mt-1">
+                  {{ loshuAnalysis().counts[4] > 0 ? ('' + 4).repeat(loshuAnalysis().counts[4]) : '—' }}
+                </span>
+                <span class="text-[9px] text-stone-400 mt-1">Wealth / Wood</span>
+              </div>
+
+              <!-- Cell 9 (S / Fire) -->
+              <div class="p-4 rounded-xl border border-emerald-800 bg-emerald-900/60 flex flex-col items-center justify-center">
+                <span class="text-[10px] text-emerald-400 uppercase font-mono">Slot 9</span>
+                <span class="text-2xl font-bold font-mono text-amber-300 mt-1">
+                  {{ loshuAnalysis().counts[9] > 0 ? ('' + 9).repeat(loshuAnalysis().counts[9]) : '—' }}
+                </span>
+                <span class="text-[9px] text-stone-400 mt-1">Fame / Fire</span>
+              </div>
+
+              <!-- Cell 2 (SW / Earth) -->
+              <div class="p-4 rounded-xl border border-emerald-800 bg-emerald-900/60 flex flex-col items-center justify-center">
+                <span class="text-[10px] text-emerald-400 uppercase font-mono">Slot 2</span>
+                <span class="text-2xl font-bold font-mono text-amber-300 mt-1">
+                  {{ loshuAnalysis().counts[2] > 0 ? ('' + 2).repeat(loshuAnalysis().counts[2]) : '—' }}
+                </span>
+                <span class="text-[9px] text-stone-400 mt-1">Love / Earth</span>
+              </div>
+
+              <!-- Cell 3 (E / Wood) -->
+              <div class="p-4 rounded-xl border border-emerald-800 bg-emerald-900/60 flex flex-col items-center justify-center">
+                <span class="text-[10px] text-emerald-400 uppercase font-mono">Slot 3</span>
+                <span class="text-2xl font-bold font-mono text-amber-300 mt-1">
+                  {{ loshuAnalysis().counts[3] > 0 ? ('' + 3).repeat(loshuAnalysis().counts[3]) : '—' }}
+                </span>
+                <span class="text-[9px] text-stone-400 mt-1">Health / Wood</span>
+              </div>
+
+              <!-- Cell 5 (Center / Earth) -->
+              <div class="p-4 rounded-xl border border-amber-500/60 bg-emerald-900 flex flex-col items-center justify-center shadow-inner">
+                <span class="text-[10px] text-amber-300 uppercase font-mono">Slot 5</span>
+                <span class="text-2xl font-bold font-mono text-white mt-1">
+                  {{ loshuAnalysis().counts[5] > 0 ? ('' + 5).repeat(loshuAnalysis().counts[5]) : '—' }}
+                </span>
+                <span class="text-[9px] text-amber-200 mt-1">Center / Balance</span>
+              </div>
+
+              <!-- Cell 7 (W / Metal) -->
+              <div class="p-4 rounded-xl border border-emerald-800 bg-emerald-900/60 flex flex-col items-center justify-center">
+                <span class="text-[10px] text-emerald-400 uppercase font-mono">Slot 7</span>
+                <span class="text-2xl font-bold font-mono text-amber-300 mt-1">
+                  {{ loshuAnalysis().counts[7] > 0 ? ('' + 7).repeat(loshuAnalysis().counts[7]) : '—' }}
+                </span>
+                <span class="text-[9px] text-stone-400 mt-1">Children / Metal</span>
+              </div>
+
+              <!-- Cell 8 (NE / Earth) -->
+              <div class="p-4 rounded-xl border border-emerald-800 bg-emerald-900/60 flex flex-col items-center justify-center">
+                <span class="text-[10px] text-emerald-400 uppercase font-mono">Slot 8</span>
+                <span class="text-2xl font-bold font-mono text-amber-300 mt-1">
+                  {{ loshuAnalysis().counts[8] > 0 ? ('' + 8).repeat(loshuAnalysis().counts[8]) : '—' }}
+                </span>
+                <span class="text-[9px] text-stone-400 mt-1">Knowledge / Earth</span>
+              </div>
+
+              <!-- Cell 1 (N / Water) -->
+              <div class="p-4 rounded-xl border border-emerald-800 bg-emerald-900/60 flex flex-col items-center justify-center">
+                <span class="text-[10px] text-emerald-400 uppercase font-mono">Slot 1</span>
+                <span class="text-2xl font-bold font-mono text-amber-300 mt-1">
+                  {{ loshuAnalysis().counts[1] > 0 ? ('' + 1).repeat(loshuAnalysis().counts[1]) : '—' }}
+                </span>
+                <span class="text-[9px] text-stone-400 mt-1">Career / Water</span>
+              </div>
+
+              <!-- Cell 6 (NW / Metal) -->
+              <div class="p-4 rounded-xl border border-emerald-800 bg-emerald-900/60 flex flex-col items-center justify-center">
+                <span class="text-[10px] text-emerald-400 uppercase font-mono">Slot 6</span>
+                <span class="text-2xl font-bold font-mono text-amber-300 mt-1">
+                  {{ loshuAnalysis().counts[6] > 0 ? ('' + 6).repeat(loshuAnalysis().counts[6]) : '—' }}
+                </span>
+                <span class="text-[9px] text-stone-400 mt-1">Travel / Metal</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Planes & Yogas Deep Dive -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="bg-white rounded-2xl border border-stone-200 p-6 sm:p-8 shadow-xs space-y-6">
+            
+            <div class="pb-4 border-b border-stone-100 flex items-center justify-between">
+              <div>
+                <h3 class="font-cinzel text-base font-bold text-stone-900">
+                  Consciousness Planes & Arrows of Strength
+                </h3>
+                <p class="text-xs text-stone-500">Horizontal & Vertical Energy Alignments</p>
+              </div>
+              <span class="text-xs font-mono font-bold text-emerald-900">
+                Present: {{ loshuAnalysis().presentNumbers.join(', ') }}
+              </span>
+            </div>
+
+            <!-- Raj Yogas Alert if present -->
+            @if (loshuAnalysis().rajYogas.length > 0) {
+              <div class="p-4 rounded-xl bg-amber-50 border border-amber-300 text-stone-900 space-y-1">
+                <div class="flex items-center gap-1.5 font-bold text-amber-800 text-xs">
+                  <mat-icon class="!w-4 !h-4 !text-[18px]">workspace_premium</mat-icon>
+                  Auspicious Raj Yoga Formations
+                </div>
+                @for (yoga of loshuAnalysis().rajYogas; track yoga) {
+                  <p class="text-xs text-stone-800">{{ yoga }}</p>
+                }
+              </div>
+            }
+
+            <!-- 6 Planes List -->
+            <div class="space-y-3">
+              @for (plane of loshuAnalysis().planes; track plane.name) {
+                <div class="p-3.5 rounded-lg border border-stone-200 bg-stone-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                  <div>
+                    <div class="font-bold text-stone-900 flex items-center gap-2">
+                      <span>{{ plane.name }}</span>
+                      <span
+                        [class]="
+                          plane.status === 'Complete' ? 'bg-emerald-100 text-emerald-800' :
+                          plane.status === 'Partial' ? 'bg-amber-100 text-amber-800' :
+                          'bg-stone-200 text-stone-500'
+                        "
+                        class="text-[10px] px-2 py-0.5 rounded font-mono font-semibold">
+                        {{ plane.status }} ({{ plane.presentCount }}/3)
+                      </span>
+                    </div>
+                    <p class="text-[11px] text-stone-600 mt-0.5">{{ plane.description }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Missing Numbers & Remedial Balancing -->
+            <div class="pt-4 border-t border-stone-100 space-y-2">
+              <h4 class="font-bold text-xs uppercase text-stone-800">Missing Numbers in Grid:</h4>
+              <p class="text-xs text-stone-600">
+                Digits: <strong>{{ loshuAnalysis().missingNumbers.length > 0 ? loshuAnalysis().missingNumbers.join(', ') : 'None (Full Grid)' }}</strong>.
+                Missing numbers indicate energetic traits to intentionally cultivate through elemental balancing, gemstones, or habit tuning.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    }
+
+    <!-- TAB 3: CHALDEAN NAME NUMEROLOGY (Module 13 & 4) -->
+    @if (activeTab() === 'name') {
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-stone-200 p-6 sm:p-8 shadow-xs space-y-6">
+          <div>
+            <span class="text-xs font-mono uppercase font-bold text-amber-700">Algorithm 03</span>
+            <h2 class="font-cinzel text-xl font-bold text-stone-900 mt-1">
+              Chaldean Name Calculator
+            </h2>
+            <p class="text-xs text-stone-500 mt-1">
+              Ancient Babylonian & Chaldean numerical frequency system for personal names and business brands.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                Full Name / Brand Name
+              </label>
+              <input
+                type="text"
+                [ngModel]="nameInput()"
+                (ngModelChange)="nameInput.set($event)"
+                placeholder="e.g. Ramesh Chandra"
+                class="w-full px-3.5 py-2.5 text-xs rounded-md border border-stone-300 focus:border-emerald-700 bg-white font-medium"
+              />
+            </div>
+
+            <button
+              (click)="calculateName()"
+              class="w-full py-3 bg-emerald-900 hover:bg-emerald-800 text-white font-bold text-xs uppercase tracking-wider rounded-md transition-colors cursor-pointer">
+              Analyze Name Frequencies
+            </button>
+          </div>
+
+          <!-- Chaldean Matrix Guide -->
+          <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs text-stone-600 space-y-2">
+            <h4 class="font-bold text-stone-900 uppercase text-[11px]">Chaldean Alphabet Values</h4>
+            <div class="grid grid-cols-4 gap-2 text-[11px] font-mono">
+              <div>1 = A,I,J,Q,Y</div>
+              <div>2 = B,K,R</div>
+              <div>3 = C,G,L,S</div>
+              <div>4 = D,M,T</div>
+              <div>5 = E,H,N,X</div>
+              <div>6 = U,V,W</div>
+              <div>7 = O,Z</div>
+              <div>8 = F,P</div>
+            </div>
+            <p class="text-[10px] text-stone-400 italic">Notice: Number 9 is sacred in the Chaldean system and not assigned to individual letters.</p>
+          </div>
+        </div>
+
+        <!-- Breakdown & Output -->
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-stone-200 p-6 sm:p-8 shadow-xs space-y-6">
+          <div class="flex items-center justify-between pb-4 border-b border-stone-100">
+            <div>
+              <span class="text-xs text-stone-500 uppercase">Input Name</span>
+              <h3 class="font-cinzel text-xl font-bold text-stone-900 uppercase">{{ nameInput() }}</h3>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-stone-500 uppercase">Compound / Root</span>
+              <div class="font-mono text-2xl font-bold text-emerald-900">
+                {{ chaldeanResult().compoundNumber }} / {{ chaldeanResult().singleNumber }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Character Breakdown Table -->
+          <div>
+            <h4 class="text-xs font-bold uppercase text-stone-700 mb-2">Letter-by-Letter Values</h4>
+            <div class="flex flex-wrap gap-2">
+              @for (item of chaldeanResult().breakdown; track $index) {
+                <div class="p-2 rounded-lg bg-stone-100 border border-stone-200 text-center min-w-[40px]">
+                  <div class="font-bold text-xs text-stone-900">{{ item.char }}</div>
+                  <div class="font-mono text-xs text-amber-700 font-semibold">{{ item.value }}</div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-950 space-y-2">
+            <h4 class="font-bold text-sm">Vibrational Interpretation:</h4>
+            <p class="leading-relaxed">
+              {{ chaldeanResult().interpretation }}
+            </p>
+          </div>
+
+          <div class="pt-2 text-xs text-stone-500">
+            Need a professional spelling correction for passports, banking, or business stationery?
+            <a routerLink="/appointments" class="text-emerald-800 font-semibold hover:underline ml-1">
+              Book Name Correction Consultation &rarr;
+            </a>
+          </div>
+        </div>
+
+      </div>
+    }
+
+    <!-- TAB 4: MOBILE NUMBER NUMEROLOGY (Module 13 & 3) -->
+    @if (activeTab() === 'mobile') {
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-stone-200 p-6 sm:p-8 shadow-xs space-y-6">
+          <div>
+            <span class="text-xs font-mono uppercase font-bold text-amber-700">Algorithm 04</span>
+            <h2 class="font-cinzel text-xl font-bold text-stone-900 mt-1">
+              Mobile Number Analyzer
+            </h2>
+            <p class="text-xs text-stone-500 mt-1">
+              Decode telephonic frequencies, compound total, ending pairs, and DOB harmony.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                Enter 10-Digit Mobile Number
+              </label>
+              <input
+                type="tel"
+                [ngModel]="mobileInput()"
+                (ngModelChange)="mobileInput.set($event)"
+                placeholder="e.g. 9845012890"
+                class="w-full px-3.5 py-2.5 text-xs rounded-md border border-stone-300 focus:border-emerald-700 bg-white font-mono text-sm"
+              />
+            </div>
+
+            <button
+              (click)="calculateMobile()"
+              class="w-full py-3 bg-emerald-900 hover:bg-emerald-800 text-white font-bold text-xs uppercase tracking-wider rounded-md transition-colors cursor-pointer">
+              Analyze Mobile Number Frequency
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-stone-200 p-6 sm:p-8 shadow-xs space-y-6">
+          <div class="flex items-center justify-between pb-4 border-b border-stone-100">
+            <div>
+              <span class="text-xs text-stone-500 uppercase">Analyzed Number</span>
+              <h3 class="font-mono text-lg font-bold text-stone-900">{{ mobileResult().cleanMobile }}</h3>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-stone-500 uppercase">Total Compound / Root</span>
+              <div class="font-mono text-2xl font-bold text-emerald-900">
+                {{ mobileResult().compoundTotal }} &rarr; {{ mobileResult().singleTotal }}
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs space-y-2">
+            <h4 class="font-bold text-stone-900 uppercase">Vibrational Guidance:</h4>
+            <p class="text-stone-700 leading-relaxed">{{ mobileResult().guidance }}</p>
+          </div>
+
+          @if (mobileResult().repeatedPatterns.length > 0) {
+            <div>
+              <h4 class="text-xs font-bold uppercase text-stone-700 mb-2">Detected Number Patterns:</h4>
+              <ul class="space-y-1 text-xs text-stone-600">
+                @for (pat of mobileResult().repeatedPatterns; track pat) {
+                  <li class="flex items-center gap-1.5">
+                    <mat-icon class="!w-3.5 !h-3.5 !text-[15px] text-amber-600">info</mat-icon>
+                    <span>{{ pat }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+
+          <div>
+            <h4 class="text-xs font-bold uppercase text-stone-700 mb-2">Suggested Favorable Patterns:</h4>
+            <ul class="space-y-1 text-xs text-stone-600">
+              @for (sug of mobileResult().suggestedPairs; track sug) {
+                <li class="flex items-center gap-1.5">
+                  <mat-icon class="!w-3.5 !h-3.5 !text-[15px] text-emerald-700">check_circle</mat-icon>
+                  <span>{{ sug }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    }
+
+  </div>
+</section>

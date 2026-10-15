@@ -1,0 +1,690 @@
+<!-- Admin Banner -->
+<section class="bg-emerald-950 text-white py-12 border-b border-emerald-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-amber-400">
+          <mat-icon class="!w-4 !h-4 !text-[16px]">shield</mat-icon>
+          <span>Administrator Control Center</span>
+          <span aria-hidden="true">·</span>
+          <span>Role-Based Access</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold font-display text-white mt-1">
+          GYAN JYOTHI SCHOOL OF OCCULT SCIENCE
+        </h1>
+        <p class="text-xs text-emerald-200 mt-1">
+          Institute Operations, Appointments, Curriculum LMS, CRM Funnel & Payment Management.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="flex items-center gap-3">
+        <a
+          routerLink="/appointments"
+          class="px-3.5 py-2 bg-emerald-900 hover:bg-emerald-800 text-emerald-100 rounded-md text-xs font-semibold">
+          Client Booking View
+        </a>
+        <a
+          routerLink="/crm"
+          class="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-stone-950 rounded-md text-xs font-bold uppercase tracking-wider">
+          Open CRM
+        </a>
+      </div>
+    </div>
+
+    <!-- 10 Dashboard Statistics (Module 9) -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-8 pt-6 border-t border-emerald-900/80 text-xs">
+      <div class="p-3 bg-emerald-900/40 rounded-lg border border-emerald-800">
+        <span class="text-stone-400 text-[10px] uppercase font-bold">Total Customers</span>
+        <div class="text-xl font-bold font-mono text-white mt-0.5">{{ dataService.adminStats().totalCustomers }}</div>
+      </div>
+      <div class="p-3 bg-emerald-900/40 rounded-lg border border-emerald-800">
+        <span class="text-stone-400 text-[10px] uppercase font-bold">Total Appointments</span>
+        <div class="text-xl font-bold font-mono text-white mt-0.5">{{ dataService.adminStats().totalAppointments }}</div>
+      </div>
+      <div class="p-3 bg-emerald-900/40 rounded-lg border border-emerald-800">
+        <span class="text-amber-400 text-[10px] uppercase font-bold">Pending Appointments</span>
+        <div class="text-xl font-bold font-mono text-amber-300 mt-0.5">{{ dataService.adminStats().pendingAppointments }}</div>
+      </div>
+      <div class="p-3 bg-emerald-900/40 rounded-lg border border-emerald-800">
+        <span class="text-stone-400 text-[10px] uppercase font-bold">Completed Consults</span>
+        <div class="text-xl font-bold font-mono text-white mt-0.5">{{ dataService.adminStats().completedConsultations }}</div>
+      </div>
+      <div class="p-3 bg-emerald-900/40 rounded-lg border border-emerald-800">
+        <span class="text-stone-400 text-[10px] uppercase font-bold">Total Students</span>
+        <div class="text-xl font-bold font-mono text-white mt-0.5">{{ dataService.adminStats().totalStudents }}</div>
+      </div>
+
+      <div class="p-3 bg-emerald-900/40 rounded-lg border border-emerald-800">
+        <span class="text-stone-400 text-[10px] uppercase font-bold">Active Courses</span>
+        <div class="text-xl font-bold font-mono text-white mt-0.5">{{ dataService.adminStats().activeCourses }}</div>
+      </div>
+      <div class="p-3 bg-emerald-900/40 rounded-lg border border-emerald-800">
+        <span class="text-stone-400 text-[10px] uppercase font-bold">Course Enrollments</span>
+        <div class="text-xl font-bold font-mono text-white mt-0.5">{{ dataService.adminStats().courseEnrollments }}</div>
+      </div>
+      <div class="p-3 bg-emerald-900/40 rounded-lg border border-emerald-800">
+        <span class="text-emerald-400 text-[10px] uppercase font-bold">Verified Revenue</span>
+        <div class="text-xl font-bold font-mono text-emerald-300 mt-0.5">₹{{ dataService.adminStats().verifiedRevenue.toLocaleString('en-IN') }}</div>
+      </div>
+      <div class="p-3 bg-emerald-900/40 rounded-lg border border-emerald-800">
+        <span class="text-red-400 text-[10px] uppercase font-bold">Pending Payments</span>
+        <div class="text-xl font-bold font-mono text-red-300 mt-0.5">₹{{ dataService.adminStats().pendingRevenue.toLocaleString('en-IN') }}</div>
+      </div>
+      <div class="p-3 bg-emerald-900/40 rounded-lg border border-emerald-800">
+        <span class="text-amber-400 text-[10px] uppercase font-bold">New Inbound Leads</span>
+        <div class="text-xl font-bold font-mono text-amber-300 mt-0.5">{{ dataService.adminStats().newLeads }}</div>
+      </div>
+    </div>
+
+    <!-- Admin Navigation Tabs -->
+    <div class="flex flex-wrap items-center gap-2 mt-8">
+      <button
+        (click)="activeTab.set('stats')"
+        [class]="activeTab() === 'stats' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900 text-emerald-200 hover:text-white'"
+        class="px-3.5 py-1.5 rounded text-xs font-semibold transition-all cursor-pointer">
+        Operations Overview
+      </button>
+      <button
+        (click)="activeTab.set('branding')"
+        [class]="activeTab() === 'branding' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900 text-emerald-200 hover:text-white'"
+        class="px-3.5 py-1.5 rounded text-xs font-semibold transition-all cursor-pointer">
+        Institute Branding & Logo
+      </button>
+      <button
+        (click)="activeTab.set('services')"
+        [class]="activeTab() === 'services' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900 text-emerald-200 hover:text-white'"
+        class="px-3.5 py-1.5 rounded text-xs font-semibold transition-all cursor-pointer">
+        Manage 10 Services
+      </button>
+      <button
+        (click)="activeTab.set('appointments')"
+        [class]="activeTab() === 'appointments' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900 text-emerald-200 hover:text-white'"
+        class="px-3.5 py-1.5 rounded text-xs font-semibold transition-all cursor-pointer">
+        Manage Appointments
+      </button>
+      <button
+        (click)="activeTab.set('courses')"
+        [class]="activeTab() === 'courses' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900 text-emerald-200 hover:text-white'"
+        class="px-3.5 py-1.5 rounded text-xs font-semibold transition-all cursor-pointer">
+        Manage Courses & LMS
+      </button>
+      <button
+        (click)="activeTab.set('payments')"
+        [class]="activeTab() === 'payments' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900 text-emerald-200 hover:text-white'"
+        class="px-3.5 py-1.5 rounded text-xs font-semibold transition-all cursor-pointer">
+        Payment Gateway & Invoices
+      </button>
+      <button
+        (click)="activeTab.set('settings')"
+        [class]="activeTab() === 'settings' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900 text-emerald-200 hover:text-white'"
+        class="px-3.5 py-1.5 rounded text-xs font-semibold transition-all cursor-pointer">
+        Website Timings & Gateway
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Main Workspace -->
+<section class="py-12 bg-stone-50 min-h-[600px]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- SUCCESS MSG -->
+    @if (settingsSavedMessage()) {
+      <div class="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-semibold flex items-center gap-2">
+        <mat-icon class="!w-5 !h-5 !text-[20px] text-emerald-700">check_circle</mat-icon>
+        <span>{{ settingsSavedMessage() }}</span>
+      </div>
+    }
+
+    <!-- TAB 1: OPERATIONS OVERVIEW -->
+    @if (activeTab() === 'stats') {
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Recent Appointments -->
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-stone-200 p-6 shadow-xs space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+            <h3 class="font-cinzel text-base font-bold text-stone-900">
+              Recent Consultation Reservations
+            </h3>
+            <button (click)="activeTab.set('appointments')" class="text-xs text-emerald-800 font-semibold hover:underline">
+              View All &rarr;
+            </button>
+          </div>
+
+          <div class="space-y-3">
+            @for (apt of dataService.appointments().slice(0, 4); track apt.id) {
+              <div class="p-3.5 rounded-lg border border-stone-100 bg-stone-50 flex items-center justify-between text-xs">
+                <div>
+                  <div class="font-bold text-stone-900">{{ apt.customerName }} ({{ apt.referenceNumber }})</div>
+                  <div class="text-[11px] text-stone-500">{{ apt.serviceTitle }} · {{ apt.appointmentDate }} ({{ apt.timeSlot }})</div>
+                </div>
+                <div class="text-right">
+                  <span
+                    [class]="apt.status === 'Confirmed' ? 'text-emerald-700 font-bold' : 'text-amber-700 font-bold'"
+                    class="block text-[11px]">
+                    {{ apt.status }}
+                  </span>
+                  <span class="text-[10px] text-stone-400">₹{{ apt.feeAmount.toLocaleString('en-IN') }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Revenue Breakdown & Verification Report (Module 7) -->
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-stone-200 p-6 shadow-xs space-y-4">
+          <div class="pb-3 border-b border-stone-100">
+            <h3 class="font-cinzel text-base font-bold text-stone-900">
+              Verified Revenue Report (Razorpay)
+            </h3>
+            <p class="text-xs text-stone-500">Backend Verified Payment Gateway Transactions</p>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+              <span class="text-[10px] uppercase font-bold text-emerald-800">Total Verified Intake</span>
+              <div class="text-2xl font-bold font-mono text-emerald-950 mt-1">
+                ₹{{ dataService.adminStats().verifiedRevenue.toLocaleString('en-IN') }}
+              </div>
+              <p class="text-[11px] text-emerald-700 mt-1">PCI-DSS Verified via Razorpay Webhook</p>
+            </div>
+
+            <div class="space-y-2 pt-2">
+              <div class="flex justify-between text-stone-600">
+                <span>Numerology Consultation Fees:</span>
+                <span class="font-mono font-bold text-stone-900">₹5,498</span>
+              </div>
+              <div class="flex justify-between text-stone-600">
+                <span>Course Enrollment Fees:</span>
+                <span class="font-mono font-bold text-stone-900">₹6,999</span>
+              </div>
+              <div class="flex justify-between text-stone-600">
+                <span>Software Pre-orders:</span>
+                <span class="font-mono font-bold text-stone-900">₹0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    }
+
+    <!-- TAB 2: BRANDING & LOGO UPLOAD (Module 16 & 9) -->
+    @if (activeTab() === 'branding') {
+      <div class="bg-white rounded-2xl border border-stone-200 p-8 shadow-xs max-w-4xl space-y-6">
+        <div>
+          <span class="text-xs font-mono uppercase font-bold text-amber-700">Module 16 Compliance</span>
+          <h2 class="font-cinzel text-xl font-bold text-stone-900 mt-1">
+            Institute Branding & Official Credentials
+          </h2>
+          <p class="text-xs text-stone-500 mt-1">
+            Official institute name is locked to <strong>GYAN JYOTHI SCHOOL OF OCCULT SCIENCE</strong>. Never use "Rahasya Vidya".
+          </p>
+        </div>
+
+        <!-- Logo Upload & Preview -->
+        <div class="p-6 rounded-xl bg-stone-50 border border-stone-200 flex flex-col sm:flex-row items-center gap-6">
+          <div class="w-24 h-24 rounded-2xl overflow-hidden border-2 border-amber-500/80 bg-emerald-950 shrink-0 shadow-md">
+            <img
+              [src]="dataService.settings().logoUrl"
+              alt="Institute Logo"
+              referrerpolicy="no-referrer"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="space-y-2 text-center sm:text-left">
+            <h4 class="font-bold text-xs uppercase text-stone-800">Institute Official Crest / Logo</h4>
+            <p class="text-xs text-stone-500">Upload official emblem or select high-resolution logo image.</p>
+            <input
+              type="file"
+              accept="image/*"
+              (change)="onLogoUpload($event)"
+              class="text-xs text-stone-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-emerald-900 file:text-white hover:file:bg-emerald-800 cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 text-xs">
+          <div>
+            <label class="block font-bold uppercase text-stone-700 mb-1">Expert Name</label>
+            <input
+              type="text"
+              [ngModel]="expertName()"
+              (ngModelChange)="expertName.set($event)"
+              class="w-full px-3 py-2 border border-stone-300 rounded-md"
+            />
+          </div>
+          <div>
+            <label class="block font-bold uppercase text-stone-700 mb-1">Expert Academic Title</label>
+            <input
+              type="text"
+              [ngModel]="expertTitle()"
+              (ngModelChange)="expertTitle.set($event)"
+              class="w-full px-3 py-2 border border-stone-300 rounded-md"
+            />
+          </div>
+          <div>
+            <label class="block font-bold uppercase text-stone-700 mb-1">Contact Phone</label>
+            <input
+              type="tel"
+              [ngModel]="contactNumber()"
+              (ngModelChange)="contactNumber.set($event)"
+              class="w-full px-3 py-2 border border-stone-300 rounded-md font-mono"
+            />
+          </div>
+          <div>
+            <label class="block font-bold uppercase text-stone-700 mb-1">WhatsApp Number</label>
+            <input
+              type="tel"
+              [ngModel]="whatsappNumber()"
+              (ngModelChange)="whatsappNumber.set($event)"
+              class="w-full px-3 py-2 border border-stone-300 rounded-md font-mono"
+            />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block font-bold uppercase text-stone-700 mb-1">Official Email Address</label>
+            <input
+              type="email"
+              [ngModel]="emailAddress()"
+              (ngModelChange)="emailAddress.set($event)"
+              class="w-full px-3 py-2 border border-stone-300 rounded-md"
+            />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block font-bold uppercase text-stone-700 mb-1">Chamber Office Address</label>
+            <textarea
+              [ngModel]="officeAddress()"
+              (ngModelChange)="officeAddress.set($event)"
+              rows="2"
+              class="w-full px-3 py-2 border border-stone-300 rounded-md"></textarea>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-stone-200 flex justify-end">
+          <button
+            (click)="saveBranding()"
+            class="px-6 py-2.5 rounded-md bg-emerald-900 hover:bg-emerald-800 text-white font-bold text-xs uppercase tracking-wider">
+            Save Institute Branding Settings
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- TAB 3: SERVICES PRICING & AVAILABILITY (Module 2) -->
+    @if (activeTab() === 'services') {
+      <div class="bg-white rounded-2xl border border-stone-200 p-8 shadow-xs space-y-6">
+        <div class="flex items-center justify-between pb-4 border-b border-stone-100">
+          <div>
+            <h2 class="font-cinzel text-xl font-bold text-stone-900">
+              Manage 10 Service Categories
+            </h2>
+            <p class="text-xs text-stone-500 mt-0.5">
+              Adjust consultation fees and toggle live availability across all 10 categories.
+            </p>
+          </div>
+          <span class="text-xs text-stone-500">
+            Rules 8, 9, 10: Strict Title-Only Preservation
+          </span>
+        </div>
+
+        <div class="divide-y divide-stone-100 text-xs">
+          @for (service of dataService.services(); track service.id) {
+            <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <span class="font-mono font-bold text-amber-700">0{{ service.categoryNumber }}.</span>
+                <div>
+                  <h4 class="font-bold text-stone-900 text-sm">{{ service.title }}</h4>
+                  <span class="text-[11px] text-stone-500">
+                    {{ service.isTitleOnly ? 'Title-only consultation category' : service.shortDescription }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-bold">Fee: ₹</span>
+                  <input
+                    type="number"
+                    [ngModel]="service.price"
+                    (ngModelChange)="onServicePriceEdit(service.id, $event)"
+                    class="w-20 px-2 py-1 text-xs border border-stone-300 rounded font-bold"
+                  />
+                </div>
+
+                <button
+                  (click)="toggleService(service.id)"
+                  [class]="service.isAvailable ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'"
+                  class="px-3 py-1 rounded text-xs font-semibold cursor-pointer">
+                  {{ service.isAvailable ? 'Available' : 'Unavailable' }}
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- TAB 4: APPOINTMENTS CONTROL & MEETING LINK MANAGEMENT (Module 3 & 4) -->
+    @if (activeTab() === 'appointments') {
+      <div class="bg-white rounded-2xl border border-stone-200 p-8 shadow-xs space-y-6">
+        <div class="flex items-center justify-between pb-4 border-b border-stone-100">
+          <div>
+            <h2 class="font-cinzel text-xl font-bold text-stone-900">
+              Consultation Master Log
+            </h2>
+            <p class="text-xs text-stone-500 mt-0.5">
+              Review booked slots, set Google Meet video links, add consultation notes, and schedule follow-ups.
+            </p>
+          </div>
+          <span class="text-xs font-mono font-bold text-emerald-900">
+            Total: {{ dataService.appointments().length }} Bookings
+          </span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-stone-200 bg-stone-50 text-stone-600 uppercase font-semibold">
+                <th class="py-3 px-3">Ref #</th>
+                <th class="py-3 px-3">Client</th>
+                <th class="py-3 px-3">Service</th>
+                <th class="py-3 px-3">Date & Slot</th>
+                <th class="py-3 px-3">Mode & Bridge</th>
+                <th class="py-3 px-3">Status</th>
+                <th class="py-3 px-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-stone-100">
+              @for (apt of dataService.appointments(); track apt.id) {
+                <tr class="hover:bg-stone-50/70">
+                  <td class="py-3 px-3 font-mono font-bold text-emerald-950">{{ apt.referenceNumber }}</td>
+                  <td class="py-3 px-3">
+                    <div class="font-bold text-stone-900">{{ apt.customerName }}</div>
+                    <div class="text-[11px] text-stone-400 font-mono">{{ apt.mobileNumber }}</div>
+                  </td>
+                  <td class="py-3 px-3 text-stone-800">{{ apt.serviceTitle }}</td>
+                  <td class="py-3 px-3">
+                    <div class="font-medium text-stone-900">{{ apt.appointmentDate }}</div>
+                    <div class="text-[11px] text-stone-500">{{ apt.timeSlot }}</div>
+                  </td>
+                  <td class="py-3 px-3">
+                    <div class="font-medium text-stone-800">{{ apt.consultationMode }}</div>
+                    <div class="text-[11px] text-amber-700 font-mono truncate max-w-xs">{{ apt.meetingLink || 'No link assigned' }}</div>
+                  </td>
+                  <td class="py-3 px-3">
+                    <span
+                      [class]="
+                        apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
+                        apt.status === 'Pending' ? 'bg-amber-100 text-amber-800' :
+                        apt.status === 'Completed' ? 'bg-purple-100 text-purple-800' :
+                        'bg-stone-100 text-stone-500'
+                      "
+                      class="px-2 py-0.5 rounded text-[11px] font-bold">
+                      {{ apt.status }}
+                    </span>
+                  </td>
+                  <td class="py-3 px-3 text-right">
+                    <button
+                      (click)="openEditAppointment(apt)"
+                      class="px-3 py-1 rounded bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold text-[11px] cursor-pointer">
+                      Edit / Bridge
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- TAB 5: COURSES & LMS MASTER -->
+    @if (activeTab() === 'courses') {
+      <div class="bg-white rounded-2xl border border-stone-200 p-8 shadow-xs space-y-6">
+        <div class="flex items-center justify-between pb-4 border-b border-stone-100">
+          <div>
+            <h2 class="font-cinzel text-xl font-bold text-stone-900">
+              Manage 7 Certification Courses
+            </h2>
+            <p class="text-xs text-stone-500 mt-0.5">
+              Control enrollment pricing and curriculum modules.
+            </p>
+          </div>
+          <a routerLink="/courses" class="text-xs text-emerald-800 font-semibold hover:underline">
+            View Marketplace &rarr;
+          </a>
+        </div>
+
+        <div class="space-y-4">
+          @for (c of dataService.courses(); track c.id) {
+            <div class="p-4 rounded-xl border border-stone-200 bg-stone-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-full bg-emerald-950 text-amber-400 font-bold flex items-center justify-center shrink-0">
+                  0{{ $index + 1 }}
+                </span>
+                <div>
+                  <h4 class="font-bold text-stone-900 text-sm">{{ c.title }}</h4>
+                  <p class="text-[11px] text-stone-500">{{ c.durationWeeks }} Weeks · {{ c.lessons.length }} Lessons · {{ c.quizzes.length }} Quizzes</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-bold">Fee: ₹</span>
+                  <input
+                    type="number"
+                    [ngModel]="c.price"
+                    (ngModelChange)="onCoursePriceEdit(c.id, $event)"
+                    class="w-24 px-2 py-1 text-xs border border-stone-300 rounded font-bold bg-white"
+                  />
+                </div>
+                <a
+                  routerLink="/lms"
+                  class="px-3 py-1.5 bg-emerald-900 text-white rounded font-medium hover:bg-emerald-800">
+                  Open in LMS
+                </a>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- TAB 6: PAYMENTS & INVOICES (Module 7) -->
+    @if (activeTab() === 'payments') {
+      <div class="bg-white rounded-2xl border border-stone-200 p-8 shadow-xs space-y-6">
+        <div class="flex items-center justify-between pb-4 border-b border-stone-100">
+          <div>
+            <h2 class="font-cinzel text-xl font-bold text-stone-900">
+              Payment Gateway Transactions & Receipts
+            </h2>
+            <p class="text-xs text-stone-500 mt-0.5">
+              Verified Razorpay payments, receipts, and refund tracking. Never unverified.
+            </p>
+          </div>
+          <span class="text-xs font-mono font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded">
+            Total: ₹{{ dataService.adminStats().verifiedRevenue.toLocaleString('en-IN') }} Verified
+          </span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-stone-200 bg-stone-50 text-stone-600 uppercase font-semibold">
+                <th class="py-3 px-3">Receipt #</th>
+                <th class="py-3 px-3">Customer</th>
+                <th class="py-3 px-3">Item / Service</th>
+                <th class="py-3 px-3">Amount</th>
+                <th class="py-3 px-3">Payment Method</th>
+                <th class="py-3 px-3">Status</th>
+                <th class="py-3 px-3">Date</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-stone-100">
+              @for (tx of dataService.payments(); track tx.id) {
+                <tr class="hover:bg-stone-50/70">
+                  <td class="py-3 px-3 font-mono font-bold text-emerald-950">{{ tx.receiptNumber }}</td>
+                  <td class="py-3 px-3">
+                    <div class="font-bold text-stone-900">{{ tx.customerName }}</div>
+                    <div class="text-[11px] text-stone-500 font-mono">{{ tx.customerPhone }}</div>
+                  </td>
+                  <td class="py-3 px-3 text-stone-800">{{ tx.itemTitle }}</td>
+                  <td class="py-3 px-3 font-mono font-bold text-stone-900">₹{{ tx.amount.toLocaleString('en-IN') }}</td>
+                  <td class="py-3 px-3 text-stone-600">{{ tx.paymentMethod }}</td>
+                  <td class="py-3 px-3">
+                    <span
+                      [class]="tx.status === 'Verified' ? 'bg-emerald-100 text-emerald-800 font-bold' : 'bg-amber-100 text-amber-800 font-bold'"
+                      class="px-2 py-0.5 rounded text-[11px]">
+                      {{ tx.status }}
+                    </span>
+                  </td>
+                  <td class="py-3 px-3 text-stone-500">{{ tx.createdAt }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- TAB 7: SETTINGS & TIMINGS (Module 16) -->
+    @if (activeTab() === 'settings') {
+      <div class="bg-white rounded-2xl border border-stone-200 p-8 shadow-xs max-w-4xl space-y-6">
+        <div>
+          <h2 class="font-cinzel text-xl font-bold text-stone-900">
+            Operational Timings & Gateway Configuration
+          </h2>
+          <p class="text-xs text-stone-500 mt-0.5">
+            Configure consultation appointment slots and payment mode.
+          </p>
+        </div>
+
+        <div class="space-y-4 text-xs">
+          <div>
+            <label class="block font-bold uppercase text-stone-700 mb-2">Active Consultation Time Slots</label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              @for (slot of dataService.settings().availableTimeSlots; track slot) {
+                <div class="p-2.5 rounded-lg border border-stone-200 bg-stone-50 flex items-center justify-between">
+                  <span class="font-medium text-stone-800">{{ slot }}</span>
+                  <mat-icon class="!w-4 !h-4 !text-[16px] text-emerald-700">schedule</mat-icon>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-stone-200">
+            <label class="block font-bold uppercase text-stone-700 mb-1">Razorpay Environment Mode</label>
+            <div class="flex items-center gap-4">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="rzpMode"
+                  value="Test Mode"
+                  [checked]="razorpayMode() === 'Test Mode'"
+                  (change)="razorpayMode.set('Test Mode')"
+                />
+                <span>Test Mode (Demo Sandbox)</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="rzpMode"
+                  value="Live"
+                  [checked]="razorpayMode() === 'Live'"
+                  (change)="razorpayMode.set('Live')"
+                />
+                <span>Live Mode (Production)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-stone-200">
+            <label class="block font-bold uppercase text-stone-700 mb-1">Official Medical Disclaimer & Terms</label>
+            <textarea
+              [ngModel]="dataService.settings().termsAndConditions"
+              rows="3"
+              class="w-full px-3 py-2 border border-stone-300 rounded-md bg-stone-50"
+              readonly></textarea>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-stone-200 flex justify-end">
+          <button
+            (click)="saveBranding()"
+            class="px-6 py-2.5 rounded-md bg-emerald-900 hover:bg-emerald-800 text-white font-bold text-xs uppercase tracking-wider">
+            Update Gateway & Timings
+          </button>
+        </div>
+      </div>
+    }
+
+  </div>
+</section>
+
+<!-- EDIT APPOINTMENT / ASSIGN VIDEO LINK DRAWER -->
+@if (editingAppointment()) {
+  <div class="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-stone-200 max-w-lg w-full p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+        <div>
+          <h3 class="font-cinzel text-base font-bold text-stone-900">
+            Manage Consultation Appointment
+          </h3>
+          <p class="text-xs text-stone-500 font-mono">{{ editingAppointment()?.referenceNumber }} · {{ editingAppointment()?.customerName }}</p>
+        </div>
+        <button (click)="closeEditAppointment()" class="text-stone-400 hover:text-stone-600">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold uppercase text-stone-700 mb-1">Appointment Status</label>
+          <select
+            [ngModel]="editStatus()"
+            (ngModelChange)="editStatus.set($event)"
+            class="w-full px-3 py-2 border border-stone-300 rounded-md bg-white font-medium">
+            <option value="Confirmed">Confirmed</option>
+            <option value="Pending">Pending</option>
+            <option value="Rescheduled">Rescheduled</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold uppercase text-stone-700 mb-1">Video Meeting Link / Telephone Bridge</label>
+          <input
+            type="text"
+            [ngModel]="editMeetingLink()"
+            (ngModelChange)="editMeetingLink.set($event)"
+            placeholder="https://meet.google.com/..."
+            class="w-full px-3 py-2 border border-stone-300 rounded-md font-mono"
+          />
+        </div>
+
+        <div>
+          <label class="block font-bold uppercase text-stone-700 mb-1">Consultant Notes & Vedic Remedies Prescribed</label>
+          <textarea
+            [ngModel]="editNotes()"
+            (ngModelChange)="editNotes.set($event)"
+            rows="3"
+            placeholder="e.g. Mulank 6, Bhagyank 3. Advised yellow sapphire or citrine remedy..."
+            class="w-full px-3 py-2 border border-stone-300 rounded-md"></textarea>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-stone-100 flex justify-end gap-3">
+        <button (click)="closeEditAppointment()" class="px-4 py-2 text-xs font-semibold text-stone-600 hover:bg-stone-100 rounded-md">
+          Cancel
+        </button>
+        <button
+          (click)="saveAppointmentChanges()"
+          class="px-4 py-2 text-xs font-semibold uppercase text-stone-950 bg-amber-400 hover:bg-amber-300 rounded-md shadow-xs">
+          Save Appointment Changes
+        </button>
+      </div>
+    </div>
+  </div>
+}

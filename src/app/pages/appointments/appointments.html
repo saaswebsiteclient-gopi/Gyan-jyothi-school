@@ -1,0 +1,661 @@
+<!-- Appointments Page Header Banner -->
+<section class="bg-emerald-950 text-white py-14 border-b border-emerald-900 no-print">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl space-y-3">
+      <div class="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-amber-400">
+        <span>Consultation Sanctum</span>
+        <span aria-hidden="true">·</span>
+        <span>Online Booking Engine</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold font-display text-white">
+        Schedule Your Private Numerology Consultation
+      </h1>
+      <p class="text-emerald-100/90 text-sm leading-relaxed">
+        Confidential, individualized occult readings conducted personally by Acharya Gyan Jyothi. Select your preferred mode (Video, Phone, or In-Person at our Bengaluru chamber) and reserved time slot.
+      </p>
+
+      <!-- Sub Tabs: Book vs History -->
+      <div class="pt-4 flex items-center gap-3">
+        <button
+          (click)="activeTab.set('book'); confirmationAppointment.set(null)"
+          [class]="activeTab() === 'book' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900/80 text-emerald-200 hover:text-white'"
+          class="px-4 py-2 rounded-md text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2">
+          <mat-icon class="!w-4 !h-4 !text-[16px]">edit_calendar</mat-icon>
+          Book New Consultation
+        </button>
+        <button
+          (click)="activeTab.set('history')"
+          [class]="activeTab() === 'history' ? 'bg-amber-400 text-stone-950 font-bold' : 'bg-emerald-900/80 text-emerald-200 hover:text-white'"
+          class="px-4 py-2 rounded-md text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2">
+          <mat-icon class="!w-4 !h-4 !text-[16px]">history</mat-icon>
+          View Bookings & Reschedule
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Container -->
+<section class="py-14 bg-stone-50 min-h-[600px]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- BOOKING SUCCESS CONFIRMATION SCREEN (When appointment booked) -->
+    @if (confirmationAppointment()) {
+      <div id="printable-report" class="max-w-3xl mx-auto bg-white rounded-2xl border border-stone-200 p-8 shadow-xl">
+        <div class="text-center pb-6 border-b border-stone-200">
+          <div class="w-14 h-14 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mx-auto mb-3">
+            <mat-icon class="!w-8 !h-8 !text-[32px]">verified</mat-icon>
+          </div>
+          <span class="text-xs uppercase font-mono tracking-widest text-amber-700 font-bold">
+            Consultation Confirmed
+          </span>
+          <h2 class="font-cinzel text-2xl font-bold text-stone-900 mt-1">
+            GYAN JYOTHI SCHOOL OF OCCULT SCIENCE
+          </h2>
+          <p class="text-xs text-stone-500 mt-1">Official Booking Confirmation Voucher</p>
+        </div>
+
+        <div class="py-6 space-y-4 text-xs sm:text-sm">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-xl bg-stone-50 border border-stone-200">
+            <div>
+              <div class="text-[11px] text-stone-500 uppercase font-bold">Booking Ref</div>
+              <div class="font-mono font-bold text-emerald-900 text-sm mt-0.5">
+                {{ confirmationAppointment()?.referenceNumber }}
+              </div>
+            </div>
+            <div>
+              <div class="text-[11px] text-stone-500 uppercase font-bold">Status</div>
+              <div class="font-semibold text-emerald-700 mt-0.5 flex items-center gap-1">
+                <mat-icon class="!w-3.5 !h-3.5 !text-[14px]">check_circle</mat-icon>
+                {{ confirmationAppointment()?.status }}
+              </div>
+            </div>
+            <div>
+              <div class="text-[11px] text-stone-500 uppercase font-bold">Date & Time</div>
+              <div class="font-medium text-stone-800 mt-0.5">
+                {{ confirmationAppointment()?.appointmentDate }}
+              </div>
+              <div class="text-[11px] text-stone-500">{{ confirmationAppointment()?.timeSlot }}</div>
+            </div>
+            <div>
+              <div class="text-[11px] text-stone-500 uppercase font-bold">Fee Amount</div>
+              <div class="font-bold text-stone-900 mt-0.5">
+                ₹{{ confirmationAppointment()?.feeAmount?.toLocaleString('en-IN') }}
+              </div>
+              <div class="text-[10px] text-emerald-700 font-medium">Verified (Razorpay)</div>
+            </div>
+          </div>
+
+          <div class="space-y-2 border-t border-stone-100 pt-4">
+            <div class="flex justify-between py-1 border-b border-stone-100">
+              <span class="text-stone-500">Client Full Name:</span>
+              <span class="font-semibold text-stone-900">{{ confirmationAppointment()?.customerName }}</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-stone-100">
+              <span class="text-stone-500">Contact Mobile:</span>
+              <span class="font-semibold text-stone-900">{{ confirmationAppointment()?.mobileNumber }}</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-stone-100">
+              <span class="text-stone-500">Date of Birth for Chart:</span>
+              <span class="font-semibold text-stone-900">{{ confirmationAppointment()?.dateOfBirth }}</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-stone-100">
+              <span class="text-stone-500">Service Category:</span>
+              <span class="font-semibold text-emerald-900">{{ confirmationAppointment()?.serviceTitle }}</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-stone-100">
+              <span class="text-stone-500">Consultation Mode:</span>
+              <span class="font-semibold text-stone-900">{{ confirmationAppointment()?.consultationMode }}</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-stone-100">
+              <span class="text-stone-500">Meeting Bridge / Venue:</span>
+              <span class="font-semibold text-amber-800">{{ confirmationAppointment()?.meetingLink }}</span>
+            </div>
+          </div>
+
+          <div class="p-3 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-900">
+            <strong>Next Steps:</strong> Acharya Gyan Jyothi will prepare your natal numerological chart prior to the session. Please ensure you are reachable via your registered mobile/WhatsApp 5 minutes before your time slot.
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-4 no-print">
+          <button
+            (click)="printBookingReceipt()"
+            class="px-5 py-2.5 rounded-md bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold uppercase flex items-center gap-2 cursor-pointer">
+            <mat-icon class="!w-4 !h-4 !text-[16px]">print</mat-icon>
+            Print / Save Receipt
+          </button>
+          <div class="flex items-center gap-3">
+            <button
+              (click)="confirmationAppointment.set(null); activeTab.set('history')"
+              class="px-4 py-2 rounded-md bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-semibold">
+              View All My Bookings
+            </button>
+            <button
+              (click)="confirmationAppointment.set(null); activeTab.set('book')"
+              class="px-4 py-2 rounded-md bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-semibold">
+              Book Another
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- TAB 1: BOOK NEW APPOINTMENT FORM -->
+    @if (activeTab() === 'book' && !confirmationAppointment()) {
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        <!-- Left: Form -->
+        <div class="lg:col-span-8 bg-white rounded-2xl border border-stone-200 p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center justify-between pb-4 border-b border-stone-100 mb-6">
+            <div>
+              <h2 class="font-cinzel text-xl font-bold text-stone-900">
+                Online Consultation Reservation
+              </h2>
+              <p class="text-xs text-stone-500 mt-0.5">
+                Fill in your accurate birth details for natal chart preparation.
+              </p>
+            </div>
+            <span class="text-xs font-mono text-amber-700 bg-amber-50 px-2 py-1 rounded border border-amber-200">
+              Double-Booking Protected
+            </span>
+          </div>
+
+          @if (bookingError()) {
+            <div class="p-4 mb-6 rounded-lg bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-2">
+              <mat-icon class="!w-5 !h-5 !text-[20px] text-red-600 shrink-0">error</mat-icon>
+              <span>{{ bookingError() }}</span>
+            </div>
+          }
+
+          <form [formGroup]="bookingForm" (ngSubmit)="onInitiateBooking()" class="space-y-6">
+            
+            <!-- Row 1: Name and Email -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                  Full Name (As per official records) *
+                </label>
+                <input
+                  type="text"
+                  formControlName="fullName"
+                  placeholder="e.g. Ramesh Chandra Sharma"
+                  class="w-full px-3.5 py-2.5 text-xs rounded-md border border-stone-300 focus:border-emerald-700 focus:outline-hidden"
+                />
+                @if (bookingForm.get('fullName')?.touched && bookingForm.get('fullName')?.invalid) {
+                  <span class="text-[11px] text-red-600">Full name is required.</span>
+                }
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                  Email Address *
+                </label>
+                <input
+                  type="email"
+                  formControlName="emailAddress"
+                  placeholder="ramesh@example.com"
+                  class="w-full px-3.5 py-2.5 text-xs rounded-md border border-stone-300 focus:border-emerald-700 focus:outline-hidden"
+                />
+                @if (bookingForm.get('emailAddress')?.touched && bookingForm.get('emailAddress')?.invalid) {
+                  <span class="text-[11px] text-red-600">Valid email address required.</span>
+                }
+              </div>
+            </div>
+
+            <!-- Row 2: Mobile, WhatsApp and DOB -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                  Mobile Number *
+                </label>
+                <input
+                  type="tel"
+                  formControlName="mobileNumber"
+                  placeholder="+91 98765 43210"
+                  class="w-full px-3.5 py-2.5 text-xs rounded-md border border-stone-300 focus:border-emerald-700 focus:outline-hidden"
+                />
+                @if (bookingForm.get('mobileNumber')?.touched && bookingForm.get('mobileNumber')?.invalid) {
+                  <span class="text-[11px] text-red-600">Valid mobile required.</span>
+                }
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                  WhatsApp Number *
+                </label>
+                <input
+                  type="tel"
+                  formControlName="whatsappNumber"
+                  placeholder="+91 98765 43210"
+                  class="w-full px-3.5 py-2.5 text-xs rounded-md border border-stone-300 focus:border-emerald-700 focus:outline-hidden"
+                />
+                @if (bookingForm.get('whatsappNumber')?.touched && bookingForm.get('whatsappNumber')?.invalid) {
+                  <span class="text-[11px] text-red-600">WhatsApp number required.</span>
+                }
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                  Date of Birth (DOB) *
+                </label>
+                <input
+                  type="date"
+                  formControlName="dateOfBirth"
+                  class="w-full px-3.5 py-2 text-xs rounded-md border border-stone-300 focus:border-emerald-700 focus:outline-hidden bg-white"
+                />
+                @if (bookingForm.get('dateOfBirth')?.touched && bookingForm.get('dateOfBirth')?.invalid) {
+                  <span class="text-[11px] text-red-600">Date of birth is required.</span>
+                }
+              </div>
+            </div>
+
+            <!-- Row 3: Service Selection & Consultation Mode -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                  Consultation Service (10 Categories) *
+                </label>
+                <select
+                  formControlName="serviceId"
+                  class="w-full px-3.5 py-2.5 text-xs rounded-md border border-stone-300 focus:border-emerald-700 focus:outline-hidden bg-white font-medium">
+                  @for (srv of dataService.services(); track srv.id) {
+                    <option [value]="srv.id" [disabled]="!srv.isAvailable">
+                      0{{ srv.categoryNumber }}. {{ srv.title }} — ₹{{ srv.price.toLocaleString('en-IN') }} {{ !srv.isAvailable ? '(Unavailable)' : '' }}
+                    </option>
+                  }
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                  Consultation Mode *
+                </label>
+                <select
+                  formControlName="consultationMode"
+                  class="w-full px-3.5 py-2.5 text-xs rounded-md border border-stone-300 focus:border-emerald-700 focus:outline-hidden bg-white font-medium">
+                  <option value="Video Consultation">Video Consultation (Google Meet)</option>
+                  <option value="Phone Consultation">Phone Consultation (Direct Telephonic)</option>
+                  <option value="In-Person Consultation">In-Person Consultation (Bengaluru Sanctum)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 4: Date & Available Time Slot Selector -->
+            <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                    Preferred Appointment Date *
+                  </label>
+                  <input
+                    type="date"
+                    [min]="minBookingDate"
+                    formControlName="preferredDate"
+                    class="w-full px-3.5 py-2 text-xs rounded-md border border-stone-300 focus:border-emerald-700 focus:outline-hidden bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                    Available Time Slot *
+                  </label>
+                  <select
+                    formControlName="availableTimeSlot"
+                    class="w-full px-3.5 py-2.5 text-xs rounded-md border border-stone-300 focus:border-emerald-700 focus:outline-hidden bg-white font-medium">
+                    @for (slot of dataService.settings().availableTimeSlots; track slot) {
+                      @let isAvailable = isSlotAvailable(bookingForm.get('preferredDate')?.value || '', slot);
+                      <option [value]="slot" [disabled]="!isAvailable">
+                        {{ slot }} {{ !isAvailable ? '(Already Booked)' : '(Available)' }}
+                      </option>
+                    }
+                  </select>
+                </div>
+              </div>
+
+              <div class="text-[11px] text-stone-500 flex items-center gap-2">
+                <mat-icon class="!w-4 !h-4 !text-[16px] text-emerald-700">info</mat-icon>
+                <span>Slots are real-time locked to prevent double-booking.</span>
+              </div>
+            </div>
+
+            <!-- Row 5: Additional Questions -->
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                Specific Questions / Life Context (Optional)
+              </label>
+              <textarea
+                formControlName="additionalQuestions"
+                rows="3"
+                placeholder="Mention specific areas such as career shift, new business naming, marriage compatibility, or mobile number diagnosis..."
+                class="w-full px-3.5 py-2 text-xs rounded-md border border-stone-300 focus:border-emerald-700 focus:outline-hidden"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-2">
+              <button
+                type="submit"
+                class="w-full py-3.5 px-6 rounded-md bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs uppercase tracking-wider shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+                <mat-icon class="!w-4 !h-4 !text-[18px]">lock</mat-icon>
+                Proceed to Secure Verification & Reservation (₹{{ getSelectedService().price.toLocaleString('en-IN') }})
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Right: Service Summary & Institute Policies -->
+        <div class="lg:col-span-4 space-y-6">
+          
+          <!-- Summary Card -->
+          <div class="bg-white rounded-xl border border-stone-200 p-6 shadow-xs">
+            <h3 class="font-cinzel text-base font-bold text-emerald-950 mb-3">
+              Consultation Overview
+            </h3>
+            <div class="space-y-3 text-xs">
+              <div class="flex justify-between py-1 border-b border-stone-100">
+                <span class="text-stone-500">Service:</span>
+                <span class="font-semibold text-stone-900 text-right">{{ getSelectedService().title }}</span>
+              </div>
+              <div class="flex justify-between py-1 border-b border-stone-100">
+                <span class="text-stone-500">Consultant:</span>
+                <span class="font-semibold text-stone-900">{{ dataService.settings().expertName }}</span>
+              </div>
+              <div class="flex justify-between py-1 border-b border-stone-100">
+                <span class="text-stone-500">Duration:</span>
+                <span class="font-semibold text-stone-900">45 - 60 Minutes</span>
+              </div>
+              <div class="flex justify-between py-1 border-b border-stone-100">
+                <span class="text-stone-500">Consultation Fee:</span>
+                <span class="font-bold text-emerald-900 text-sm">₹{{ getSelectedService().price.toLocaleString('en-IN') }}</span>
+              </div>
+            </div>
+
+            <div class="mt-4 p-3 rounded-lg bg-emerald-50 text-[11px] text-emerald-900 space-y-1">
+              <div class="font-bold flex items-center gap-1">
+                <mat-icon class="!w-3.5 !h-3.5 !text-[15px]">verified</mat-icon>
+                Included in Your Booking:
+              </div>
+              <p>• Detailed Natal Numerology Chart</p>
+              <p>• Lo Shu Grid Element Mapping</p>
+              <p>• Remedial Gem, Color & Direction Guidance</p>
+              <p>• Printable PDF Report</p>
+            </div>
+          </div>
+
+          <!-- Chamber Address / Contact Card -->
+          <div class="bg-emerald-950 text-white rounded-xl p-6 shadow-xs space-y-3">
+            <h4 class="font-cinzel text-xs font-bold text-amber-400 uppercase tracking-wider">
+              Bengaluru Consultation Chamber
+            </h4>
+            <p class="text-xs text-emerald-100 leading-relaxed">
+              {{ dataService.settings().officeAddress }}
+            </p>
+            <div class="pt-2 text-xs space-y-1 text-emerald-200">
+              <p>Phone: {{ dataService.settings().contactNumber }}</p>
+              <p>WhatsApp: {{ dataService.settings().whatsappNumber }}</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    }
+
+    <!-- TAB 2: APPOINTMENT HISTORY & RESCHEDULING / CANCELLATION (Module 3 & 4) -->
+    @if (activeTab() === 'history' && !confirmationAppointment()) {
+      <div class="bg-white rounded-2xl border border-stone-200 p-6 sm:p-8 shadow-xs space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-100">
+          <div>
+            <h2 class="font-cinzel text-xl font-bold text-stone-900">
+              Consultation Bookings & Meeting Bridges
+            </h2>
+            <p class="text-xs text-stone-500 mt-0.5">
+              Manage your upcoming sessions, access video meeting links, reschedule or cancel slots.
+            </p>
+          </div>
+          <button
+            (click)="activeTab.set('book')"
+            class="px-4 py-2 bg-emerald-900 text-white rounded-md text-xs font-semibold uppercase tracking-wider hover:bg-emerald-800 self-start sm:self-auto">
+            + Book Another Session
+          </button>
+        </div>
+
+        @if (dataService.appointments().length === 0) {
+          <div class="text-center py-16 text-stone-500 text-xs">
+            No consultation appointments found. Click "Book New Consultation" to reserve your slot.
+          </div>
+        } @else {
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="border-b border-stone-200 bg-stone-50 text-stone-600 uppercase tracking-wider font-semibold">
+                  <th class="py-3 px-4">Ref #</th>
+                  <th class="py-3 px-4">Client Name</th>
+                  <th class="py-3 px-4">Service</th>
+                  <th class="py-3 px-4">Scheduled Date & Time</th>
+                  <th class="py-3 px-4">Mode / Bridge Link</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-stone-100">
+                @for (apt of dataService.appointments(); track apt.id) {
+                  <tr class="hover:bg-stone-50/70 transition-colors">
+                    <td class="py-3.5 px-4 font-mono font-bold text-emerald-950">
+                      {{ apt.referenceNumber }}
+                    </td>
+                    <td class="py-3.5 px-4">
+                      <div class="font-semibold text-stone-900">{{ apt.customerName }}</div>
+                      <div class="text-[11px] text-stone-400">{{ apt.mobileNumber }}</div>
+                    </td>
+                    <td class="py-3.5 px-4 text-stone-800">
+                      {{ apt.serviceTitle }}
+                    </td>
+                    <td class="py-3.5 px-4">
+                      <div class="font-medium text-stone-900">{{ apt.appointmentDate }}</div>
+                      <div class="text-[11px] text-stone-500">{{ apt.timeSlot }}</div>
+                    </td>
+                    <td class="py-3.5 px-4">
+                      <div class="font-medium text-stone-800">{{ apt.consultationMode }}</div>
+                      @if (apt.meetingLink) {
+                        <div class="text-[11px] text-amber-700 font-mono truncate max-w-xs" [title]="apt.meetingLink">
+                          {{ apt.meetingLink }}
+                        </div>
+                      }
+                    </td>
+                    <td class="py-3.5 px-4">
+                      <span
+                        [class]="
+                          apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
+                          apt.status === 'Pending' ? 'bg-amber-100 text-amber-800' :
+                          apt.status === 'Rescheduled' ? 'bg-blue-100 text-blue-800' :
+                          apt.status === 'Completed' ? 'bg-purple-100 text-purple-800' :
+                          'bg-stone-100 text-stone-500'
+                        "
+                        class="px-2 py-0.5 rounded text-[11px] font-semibold">
+                        {{ apt.status }}
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-right space-x-2">
+                      @if (apt.status !== 'Cancelled' && apt.status !== 'Completed') {
+                        <button
+                          (click)="openRescheduleModal(apt)"
+                          class="px-2.5 py-1 text-[11px] rounded bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium cursor-pointer">
+                          Reschedule
+                        </button>
+                        <button
+                          (click)="cancelAppointment(apt.id)"
+                          class="px-2.5 py-1 text-[11px] rounded bg-red-50 hover:bg-red-100 text-red-700 font-medium cursor-pointer">
+                          Cancel
+                        </button>
+                      } @else {
+                        <span class="text-stone-400 text-[11px]">—</span>
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</section>
+
+<!-- RESCHEDULE MODAL -->
+@if (rescheduleTarget()) {
+  <div class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl border border-stone-200 max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+        <h3 class="font-cinzel text-base font-bold text-stone-900">
+          Reschedule Consultation
+        </h3>
+        <button (click)="closeRescheduleModal()" class="text-stone-400 hover:text-stone-600">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="text-xs text-stone-600 space-y-1">
+        <p><strong>Booking Ref:</strong> {{ rescheduleTarget()?.referenceNumber }}</p>
+        <p><strong>Client:</strong> {{ rescheduleTarget()?.customerName }}</p>
+        <p><strong>Current Slot:</strong> {{ rescheduleTarget()?.appointmentDate }} ({{ rescheduleTarget()?.timeSlot }})</p>
+      </div>
+
+      @if (rescheduleMsg()) {
+        <div class="p-3 rounded bg-amber-50 border border-amber-200 text-amber-900 text-xs">
+          {{ rescheduleMsg() }}
+        </div>
+      }
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">New Date</label>
+          <input
+            type="date"
+            [min]="minBookingDate"
+            [ngModel]="rescheduleDate()"
+            (ngModelChange)="rescheduleDate.set($event)"
+            class="w-full px-3 py-2 text-xs border border-stone-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 uppercase mb-1">New Available Slot</label>
+          <select
+            [ngModel]="rescheduleSlot()"
+            (ngModelChange)="rescheduleSlot.set($event)"
+            class="w-full px-3 py-2 text-xs border border-stone-300 rounded-md bg-white">
+            @for (slot of dataService.settings().availableTimeSlots; track slot) {
+              <option [value]="slot">{{ slot }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-stone-100 flex items-center justify-end gap-3">
+        <button
+          (click)="closeRescheduleModal()"
+          class="px-4 py-2 text-xs font-semibold text-stone-600 hover:bg-stone-100 rounded-md">
+          Cancel
+        </button>
+        <button
+          (click)="executeReschedule()"
+          class="px-4 py-2 text-xs font-semibold uppercase text-stone-950 bg-amber-400 hover:bg-amber-300 rounded-md shadow-xs">
+          Confirm Reschedule
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- RAZORPAY PAYMENT SIMULATION MODAL (Module 7) -->
+@if (showPaymentModal()) {
+  <div class="fixed inset-0 z-50 bg-stone-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-stone-200 max-w-lg w-full overflow-hidden">
+      
+      <!-- Razorpay Branded Header -->
+      <div class="bg-blue-900 text-white p-5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-800 flex items-center justify-center text-white font-bold text-lg">
+            ₹
+          </div>
+          <div>
+            <h4 class="font-bold text-sm text-white">Razorpay Checkout</h4>
+            <p class="text-[11px] text-blue-200">Gyan Jyothi School of Occult Science ({{ dataService.settings().razorpayMode }})</p>
+          </div>
+        </div>
+        <button (click)="showPaymentModal.set(false)" class="text-blue-300 hover:text-white">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <!-- Payment Body -->
+      <div class="p-6 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-stone-200">
+          <div>
+            <div class="text-xs text-stone-500 uppercase">Consultation Service</div>
+            <div class="font-bold text-stone-900 text-sm">{{ pendingBookingPayload()?.serviceTitle }}</div>
+          </div>
+          <div class="text-right">
+            <div class="text-xs text-stone-500 uppercase">Total Payable</div>
+            <div class="font-bold text-emerald-800 text-lg">₹{{ pendingBookingPayload()?.feeAmount?.toLocaleString('en-IN') }}</div>
+          </div>
+        </div>
+
+        <p class="text-xs text-stone-600">
+          Select your preferred Indian payment instrument to complete verified reservation:
+        </p>
+
+        <!-- Payment Mode Selectors -->
+        <div class="space-y-2.5">
+          <button
+            (click)="confirmPaymentAndBook('UPI')"
+            class="w-full p-3 rounded-xl border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50/50 flex items-center justify-between text-left group transition-all cursor-pointer">
+            <div class="flex items-center gap-3">
+              <mat-icon class="!w-5 !h-5 !text-[20px] text-emerald-700">qr_code_2</mat-icon>
+              <div>
+                <div class="font-bold text-xs text-stone-900">UPI / QR Code (Google Pay, PhonePe, Paytm)</div>
+                <div class="text-[11px] text-stone-500">Instant verification via VPA or QR code</div>
+              </div>
+            </div>
+            <mat-icon class="!w-4 !h-4 !text-[18px] text-stone-400 group-hover:text-emerald-700">arrow_forward</mat-icon>
+          </button>
+
+          <button
+            (click)="confirmPaymentAndBook('Card')"
+            class="w-full p-3 rounded-xl border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50/50 flex items-center justify-between text-left group transition-all cursor-pointer">
+            <div class="flex items-center gap-3">
+              <mat-icon class="!w-5 !h-5 !text-[20px] text-blue-700">credit_card</mat-icon>
+              <div>
+                <div class="font-bold text-xs text-stone-900">Credit / Debit Cards (Visa, MasterCard, RuPay)</div>
+                <div class="text-[11px] text-stone-500">Secure 3D-secure OTP gateway</div>
+              </div>
+            </div>
+            <mat-icon class="!w-4 !h-4 !text-[18px] text-stone-400 group-hover:text-emerald-700">arrow_forward</mat-icon>
+          </button>
+
+          <button
+            (click)="confirmPaymentAndBook('Netbanking')"
+            class="w-full p-3 rounded-xl border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50/50 flex items-center justify-between text-left group transition-all cursor-pointer">
+            <div class="flex items-center gap-3">
+              <mat-icon class="!w-5 !h-5 !text-[20px] text-amber-700">account_balance</mat-icon>
+              <div>
+                <div class="font-bold text-xs text-stone-900">NetBanking (SBI, HDFC, ICICI, Axis & 50+ Banks)</div>
+                <div class="text-[11px] text-stone-500">Direct authorized bank checkout</div>
+              </div>
+            </div>
+            <mat-icon class="!w-4 !h-4 !text-[18px] text-stone-400 group-hover:text-emerald-700">arrow_forward</mat-icon>
+          </button>
+        </div>
+
+        <div class="pt-2 text-center text-[11px] text-stone-400">
+          🔒 256-Bit Encrypted · PCI-DSS Level 1 Certified · Backend Verified Webhook
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

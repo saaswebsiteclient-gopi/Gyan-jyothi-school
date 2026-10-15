@@ -1,0 +1,344 @@
+<!-- Reports Header Banner -->
+<section class="bg-emerald-950 text-white py-12 border-b border-emerald-900 no-print">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-amber-400">
+          <span>Official Archives</span>
+          <span aria-hidden="true">·</span>
+          <span>Downloadable PDF Dossier</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold font-display text-white mt-1">
+          Occult Science Numerology Reports
+        </h1>
+        <p class="text-xs text-emerald-200 mt-1">
+          Generate comprehensive, professional personal dossiers for clients, consultations, or personal archives.
+        </p>
+      </div>
+
+      <!-- Action -->
+      <button
+        (click)="printReport()"
+        class="px-5 py-2.5 rounded-md bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm cursor-pointer self-start md:self-auto">
+        <mat-icon class="!w-4 !h-4 !text-[18px]">print</mat-icon>
+        Print / Save Official PDF
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Configuration Controls (No-Print) -->
+<section class="py-8 bg-stone-100 border-b border-stone-200 no-print">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-xl border border-stone-200 p-6 shadow-xs space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold uppercase text-stone-500">Report Category:</span>
+          <div class="flex items-center gap-1 bg-stone-100 p-1 rounded-lg">
+            <button
+              (click)="reportCategory.set('dob')"
+              [class]="reportCategory() === 'dob' ? 'bg-emerald-900 text-white' : 'text-stone-700 hover:text-stone-900'"
+              class="px-3 py-1 rounded text-xs font-medium transition-colors cursor-pointer">
+              Date of Birth Report
+            </button>
+            <button
+              (click)="reportCategory.set('loshu')"
+              [class]="reportCategory() === 'loshu' ? 'bg-emerald-900 text-white' : 'text-stone-700 hover:text-stone-900'"
+              class="px-3 py-1 rounded text-xs font-medium transition-colors cursor-pointer">
+              Lo Shu Grid Report
+            </button>
+            <button
+              (click)="reportCategory.set('name')"
+              [class]="reportCategory() === 'name' ? 'bg-emerald-900 text-white' : 'text-stone-700 hover:text-stone-900'"
+              class="px-3 py-1 rounded text-xs font-medium transition-colors cursor-pointer">
+              Name Report
+            </button>
+            <button
+              (click)="reportCategory.set('mobile')"
+              [class]="reportCategory() === 'mobile' ? 'bg-emerald-900 text-white' : 'text-stone-700 hover:text-stone-900'"
+              class="px-3 py-1 rounded text-xs font-medium transition-colors cursor-pointer">
+              Mobile Number Report
+            </button>
+          </div>
+        </div>
+
+        <button
+          (click)="generateReport()"
+          class="px-4 py-2 bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-semibold uppercase rounded-md shadow-xs">
+          Refresh Calculations
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-stone-600 mb-1">Customer Full Name</label>
+          <input
+            type="text"
+            [ngModel]="customerName()"
+            (ngModelChange)="customerName.set($event)"
+            class="w-full px-3 py-2 text-xs border border-stone-300 rounded-md bg-white"
+          />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-stone-600 mb-1">Date of Birth</label>
+          <input
+            type="date"
+            [ngModel]="customerDob()"
+            (ngModelChange)="customerDob.set($event)"
+            class="w-full px-3 py-2 text-xs border border-stone-300 rounded-md bg-white"
+          />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-stone-600 mb-1">Mobile Number</label>
+          <input
+            type="tel"
+            [ngModel]="customerMobile()"
+            (ngModelChange)="customerMobile.set($event)"
+            class="w-full px-3 py-2 text-xs border border-stone-300 rounded-md bg-white font-mono"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINTABLE OFFICIAL REPORT CANVAS -->
+<section class="py-12 bg-stone-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6">
+    
+    <div id="printable-report" class="bg-white rounded-2xl border border-stone-300 p-8 sm:p-12 shadow-xl space-y-8 text-stone-900">
+      
+      <!-- Report Header -->
+      <div class="flex items-start justify-between pb-6 border-b-2 border-emerald-950">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-xl bg-emerald-950 text-amber-400 flex items-center justify-center border-2 border-amber-500/60 shrink-0">
+            <mat-icon class="!w-8 !h-8 !text-[32px]">explore</mat-icon>
+          </div>
+          <div>
+            <h1 class="font-cinzel text-xl sm:text-2xl font-black text-emerald-950 tracking-wide uppercase">
+              GYAN JYOTHI SCHOOL OF OCCULT SCIENCE
+            </h1>
+            <p class="font-cinzel text-xs text-amber-700 font-semibold tracking-wider uppercase">
+              Official Numerological Evaluation Dossier
+            </p>
+            <p class="text-[11px] text-stone-500 mt-0.5">
+              {{ dataService.settings().officeAddress }}
+            </p>
+          </div>
+        </div>
+
+        <div class="text-right text-xs space-y-1">
+          <div class="font-mono font-bold text-emerald-950">
+            Ref: GJOS-REP-2026-{{ birthNumber() }}{{ destinyNumber() }}
+          </div>
+          <div class="text-stone-500">Date: {{ reportDate() }}</div>
+          <div class="text-stone-500">Classification: Confidential</div>
+        </div>
+      </div>
+
+      <!-- Client Metadata Strip -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs">
+        <div>
+          <span class="text-stone-500 uppercase text-[10px] font-bold">Client Name</span>
+          <div class="font-bold text-stone-900 text-sm mt-0.5">{{ customerName() }}</div>
+        </div>
+        <div>
+          <span class="text-stone-500 uppercase text-[10px] font-bold">Date of Birth</span>
+          <div class="font-semibold text-stone-900 mt-0.5">{{ customerDob() }}</div>
+        </div>
+        <div>
+          <span class="text-stone-500 uppercase text-[10px] font-bold">Mobile Registered</span>
+          <div class="font-mono text-stone-900 mt-0.5">{{ customerMobile() }}</div>
+        </div>
+        <div>
+          <span class="text-stone-500 uppercase text-[10px] font-bold">Lead Consultant</span>
+          <div class="font-semibold text-stone-900 mt-0.5">{{ dataService.settings().expertName }}</div>
+        </div>
+      </div>
+
+      <!-- SECTION 1: CORE DOB ANALYSIS (Mulank & Bhagyank) -->
+      @if (reportCategory() === 'dob' || reportCategory() === 'loshu') {
+        <div class="space-y-4">
+          <div class="border-b border-stone-200 pb-2">
+            <h2 class="font-cinzel text-base font-bold text-emerald-950 uppercase tracking-wider">
+              1. Date of Birth Vibration Analysis
+            </h2>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="p-4 rounded-xl border border-stone-200 bg-stone-50 space-y-2 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="font-mono uppercase font-bold text-amber-700">Mulank (Birth Number)</span>
+                <span class="w-8 h-8 rounded-full bg-emerald-950 text-amber-300 font-bold text-base flex items-center justify-center font-mono">
+                  {{ birthNumber() }}
+                </span>
+              </div>
+              <p><strong>Planetary Lord:</strong> {{ mulankInfo().planet }}</p>
+              <p><strong>Core Temperament:</strong> {{ mulankInfo().nature }}</p>
+              <p><strong>Lucky Colors:</strong> {{ mulankInfo().luckyColors.join(', ') }}</p>
+              <p><strong>Harmonious Numbers:</strong> {{ mulankInfo().luckyNumbers.join(', ') }}</p>
+            </div>
+
+            <div class="p-4 rounded-xl border border-stone-200 bg-stone-50 space-y-2 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="font-mono uppercase font-bold text-amber-700">Bhagyank (Destiny Number)</span>
+                <span class="w-8 h-8 rounded-full bg-emerald-900 text-white font-bold text-base flex items-center justify-center font-mono">
+                  {{ destinyNumber() }}
+                </span>
+              </div>
+              <p><strong>Planetary Lord:</strong> {{ bhagyankInfo().planet }}</p>
+              <p><strong>Life Path Mission:</strong> {{ bhagyankInfo().nature }}</p>
+              <p><strong>Favorable Days:</strong> {{ bhagyankInfo().luckyDays.join(', ') }}</p>
+              <p><strong>Challenging Numbers:</strong> {{ bhagyankInfo().unfavorableNumbers.join(', ') }}</p>
+            </div>
+          </div>
+
+          <div class="text-xs text-stone-700 space-y-2">
+            <p><strong>Traditional Career Guidance:</strong> {{ mulankInfo().careerGuidance }}</p>
+            <p><strong>Relationship Dynamics:</strong> {{ mulankInfo().relationshipTraits }}</p>
+          </div>
+        </div>
+      }
+
+      <!-- SECTION 2: LO SHU 3x3 MATRIX -->
+      @if (reportCategory() === 'loshu' || reportCategory() === 'dob') {
+        <div class="space-y-4 pt-4">
+          <div class="border-b border-stone-200 pb-2">
+            <h2 class="font-cinzel text-base font-bold text-emerald-950 uppercase tracking-wider">
+              2. Sacred Lo Shu Grid & Planes of Strength
+            </h2>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
+            <!-- 3x3 Grid Matrix in print -->
+            <div class="sm:col-span-5 bg-stone-900 text-white p-4 rounded-xl border border-stone-800">
+              <div class="grid grid-cols-3 gap-1.5 text-center text-xs font-mono">
+                <div class="p-3 bg-stone-800 rounded">
+                  <div class="text-[9px] text-stone-400">4</div>
+                  <div class="text-lg font-bold text-amber-400">{{ loShuAnalysis().counts[4] > 0 ? (''+4).repeat(loShuAnalysis().counts[4]) : '—' }}</div>
+                </div>
+                <div class="p-3 bg-stone-800 rounded">
+                  <div class="text-[9px] text-stone-400">9</div>
+                  <div class="text-lg font-bold text-amber-400">{{ loShuAnalysis().counts[9] > 0 ? (''+9).repeat(loShuAnalysis().counts[9]) : '—' }}</div>
+                </div>
+                <div class="p-3 bg-stone-800 rounded">
+                  <div class="text-[9px] text-stone-400">2</div>
+                  <div class="text-lg font-bold text-amber-400">{{ loShuAnalysis().counts[2] > 0 ? (''+2).repeat(loShuAnalysis().counts[2]) : '—' }}</div>
+                </div>
+
+                <div class="p-3 bg-stone-800 rounded">
+                  <div class="text-[9px] text-stone-400">3</div>
+                  <div class="text-lg font-bold text-amber-400">{{ loShuAnalysis().counts[3] > 0 ? (''+3).repeat(loShuAnalysis().counts[3]) : '—' }}</div>
+                </div>
+                <div class="p-3 bg-stone-800 rounded border border-amber-500/50">
+                  <div class="text-[9px] text-amber-300">5</div>
+                  <div class="text-lg font-bold text-white">{{ loShuAnalysis().counts[5] > 0 ? (''+5).repeat(loShuAnalysis().counts[5]) : '—' }}</div>
+                </div>
+                <div class="p-3 bg-stone-800 rounded">
+                  <div class="text-[9px] text-stone-400">7</div>
+                  <div class="text-lg font-bold text-amber-400">{{ loShuAnalysis().counts[7] > 0 ? (''+7).repeat(loShuAnalysis().counts[7]) : '—' }}</div>
+                </div>
+
+                <div class="p-3 bg-stone-800 rounded">
+                  <div class="text-[9px] text-stone-400">8</div>
+                  <div class="text-lg font-bold text-amber-400">{{ loShuAnalysis().counts[8] > 0 ? (''+8).repeat(loShuAnalysis().counts[8]) : '—' }}</div>
+                </div>
+                <div class="p-3 bg-stone-800 rounded">
+                  <div class="text-[9px] text-stone-400">1</div>
+                  <div class="text-lg font-bold text-amber-400">{{ loShuAnalysis().counts[1] > 0 ? (''+1).repeat(loShuAnalysis().counts[1]) : '—' }}</div>
+                </div>
+                <div class="p-3 bg-stone-800 rounded">
+                  <div class="text-[9px] text-stone-400">6</div>
+                  <div class="text-lg font-bold text-amber-400">{{ loShuAnalysis().counts[6] > 0 ? (''+6).repeat(loShuAnalysis().counts[6]) : '—' }}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Planes Summary -->
+            <div class="sm:col-span-7 space-y-2 text-xs">
+              <p><strong>Present Energy Coordinates:</strong> {{ loShuAnalysis().presentNumbers.join(', ') }}</p>
+              <p><strong>Missing Elemental Frequencies:</strong> {{ loShuAnalysis().missingNumbers.join(', ') }}</p>
+              @if (loShuAnalysis().rajYogas.length > 0) {
+                <div class="p-2.5 rounded bg-amber-50 border border-amber-300 text-stone-800 font-medium">
+                  {{ loShuAnalysis().rajYogas.join(' | ') }}
+                </div>
+              }
+              <p class="text-stone-600">
+                The mental, emotional, and practical axes reflect balanced cognitive tenacity with grounded execution capacity.
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- SECTION 3: NAME NUMEROLOGY (Chaldean) -->
+      @if (reportCategory() === 'name') {
+        <div class="space-y-4 pt-4">
+          <div class="border-b border-stone-200 pb-2">
+            <h2 class="font-cinzel text-base font-bold text-emerald-950 uppercase tracking-wider">
+              Chaldean Name Phonetic Analysis
+            </h2>
+          </div>
+
+          <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-stone-900 text-sm uppercase">{{ customerName() }}</span>
+              <span class="font-mono font-bold text-emerald-900 text-base">Compound: {{ nameAnalysis().compoundNumber }} / Root: {{ nameAnalysis().singleNumber }}</span>
+            </div>
+            <p class="text-stone-700 leading-relaxed">{{ nameAnalysis().interpretation }}</p>
+          </div>
+        </div>
+      }
+
+      <!-- SECTION 4: MOBILE NUMEROLOGY -->
+      @if (reportCategory() === 'mobile') {
+        <div class="space-y-4 pt-4">
+          <div class="border-b border-stone-200 pb-2">
+            <h2 class="font-cinzel text-base font-bold text-emerald-950 uppercase tracking-wider">
+              Mobile Number Vibrational Compatibility
+            </h2>
+          </div>
+
+          <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-mono font-bold text-stone-900">{{ customerMobile() }}</span>
+              <span class="font-mono font-bold text-emerald-900">Total: {{ mobileAnalysis().compoundTotal }} &rarr; Root: {{ mobileAnalysis().singleTotal }}</span>
+            </div>
+            <p class="text-stone-700 leading-relaxed">{{ mobileAnalysis().guidance }}</p>
+          </div>
+        </div>
+      }
+
+      <!-- Ethical Disclaimer (Mandatory) -->
+      <div class="pt-6 border-t border-stone-200 text-[10px] text-stone-500 space-y-1.5 leading-relaxed">
+        <p>
+          <strong>Official Institute Disclaimer:</strong> This dossier is prepared by <em>GYAN JYOTHI SCHOOL OF OCCULT SCIENCE</em>. Interpretations are presented strictly as traditional philosophical readings and empirical symbolic studies, not scientifically established physical forecasts. Health numerology references provide general holistic and spiritual lifestyle orientation and are never a replacement for registered clinical medical examinations.
+        </p>
+        <p>
+          Confidential document generated for <strong>{{ customerName() }}</strong>. Unauthorized distribution or reproduction without academic attribution is prohibited.
+        </p>
+      </div>
+
+      <!-- Signatures Footer -->
+      <div class="pt-8 border-t border-stone-300 flex items-center justify-between text-xs">
+        <div>
+          <div class="font-mono text-stone-700 text-[11px]">Authorized Institute Stamp</div>
+          <div class="w-16 h-16 rounded-full border-2 border-dashed border-amber-600/70 flex items-center justify-center text-[9px] font-bold text-amber-800 uppercase text-center mt-1">
+            GJOS<br>Archives
+          </div>
+        </div>
+
+        <div class="text-right">
+          <div class="font-cinzel font-bold text-emerald-950 text-sm">
+            Acharya Gyan Jyothi
+          </div>
+          <div class="text-[10px] text-stone-500 uppercase mt-0.5">
+            Master Numerologist & Dean
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>

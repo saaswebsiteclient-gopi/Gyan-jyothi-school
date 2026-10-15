@@ -1,0 +1,6 @@
+{
+  "name": "Gyan Jyothi School of Occult Science",
+  "description": "Official portal for Gyan Jyothi School of Occult Science — Numerology consultations, professional courses, appointment booking, calculators, LMS & reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
